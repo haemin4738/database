@@ -1,8 +1,14 @@
 package com.koreatech.byeongcheonairlineapi.controller;
 
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+
+import java.util.HashMap;
+import java.util.Map;
 
 @RestController
 @Slf4j
@@ -41,5 +47,20 @@ public class MemberController {
      */
     public void logout() {
 
+    }
+
+    /**
+     * 테스트
+     */
+    @RequestMapping("test")
+    public ResponseEntity<Map<String, Object>> test() {
+        Map<String, Object> resultMap = new HashMap<>();
+        try {
+            resultMap.put("message", "SUCCESS");
+        } catch(Exception e) {
+            resultMap.put("message", "ERROR");
+            return new ResponseEntity<>(resultMap, HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+        return new ResponseEntity<>(resultMap, HttpStatus.OK);
     }
 }

@@ -30,7 +30,7 @@ public class ConfirmInterceptor implements HandlerInterceptor {
         if (jwtService.checkToken(accessToken)) return true;
         else {
 //            response.sendError(HttpStatus.UNAUTHORIZED.value());
-            response.sendError(HttpStatus.UNAUTHORIZED.value(), "ACCESS TOKEN 만료! ACCESS 토큰을 재발급 받으세요.");
+            response.sendError(HttpStatus.UNAUTHORIZED.value(), "ACCESS TOKEN 만료! ACCESS TOKEN을 재발급 받으세요.");
             return false;
         }
     }

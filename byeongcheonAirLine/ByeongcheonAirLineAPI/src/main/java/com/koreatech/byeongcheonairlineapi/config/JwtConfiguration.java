@@ -20,6 +20,7 @@ public class JwtConfiguration implements WebMvcConfigurer {
     public void addInterceptors(InterceptorRegistry registry) {
         registry.addInterceptor(confirmInterceptor)
                 .addPathPatterns("/member/*")
-                .excludePathPatterns("/member/login");
+                .excludePathPatterns("/member/login")
+                .excludePathPatterns("/member/logout/*");
     }
 }

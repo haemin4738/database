@@ -106,11 +106,11 @@ public class MemberController {
     /**
      * 로그아웃
      */
-    @PostMapping("member/logout")
-    public ResponseEntity<Map<String, Object>> logout(HttpServletRequest request) {
+    @PostMapping("member/logout/{account}")
+    public ResponseEntity<Map<String, Object>> logout(HttpServletRequest request, @PathVariable String account) {
         Map<String, Object> resultMap = new HashMap<>();
         try {
-            memberService.logout(request.getHeader("access-token"));
+            memberService.logout(account);
             resultMap.put("message", "SUCCESS!");
             return new ResponseEntity<>(resultMap, HttpStatus.OK);
         }catch (Exception e) {

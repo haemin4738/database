@@ -100,9 +100,8 @@ public class MemberServiceImpl implements MemberService {
     }
 
     @Override
-    public void logout(String token) {
-        String account = jwtService.getInfo("account", token);
-        memberMapper.deleteToken(account);
+    public void logout(String account) {
+       memberMapper.deleteTokenByAccount(account);
     }
 
 

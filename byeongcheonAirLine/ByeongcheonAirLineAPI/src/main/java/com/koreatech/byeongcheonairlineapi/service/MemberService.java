@@ -16,5 +16,5 @@ public interface MemberService {
 
     String refresh(String token);
 
-    void logout(String token);
+    void logout(String account);
 }

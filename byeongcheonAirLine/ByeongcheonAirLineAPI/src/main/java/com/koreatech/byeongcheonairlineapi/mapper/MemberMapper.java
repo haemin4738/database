@@ -2,7 +2,6 @@ package com.koreatech.byeongcheonairlineapi.mapper;
 
 import com.koreatech.byeongcheonairlineapi.dto.domain.Member;
 import org.apache.ibatis.annotations.*;
-import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.Map;
@@ -41,7 +40,7 @@ public interface MemberMapper {
             SET token = NULL
             WHERE account = #{account}
             """)
-    void deleteToken(String account);
+    void deleteTokenByAccount(String account);
 
 
 }

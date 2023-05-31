@@ -63,4 +63,5 @@ public class MemberController {
         }
         return new ResponseEntity<>(resultMap, HttpStatus.OK);
     }
+    //테스트++
 }

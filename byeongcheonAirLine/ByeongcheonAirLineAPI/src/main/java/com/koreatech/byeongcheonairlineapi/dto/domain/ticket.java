@@ -15,4 +15,5 @@ public class ticket {
     private int flightId;
     private int customerId;
     private int boardId;
+    private int seatId;
 }

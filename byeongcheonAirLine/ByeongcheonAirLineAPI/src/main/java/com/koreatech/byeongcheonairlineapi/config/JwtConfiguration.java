@@ -18,9 +18,9 @@ public class JwtConfiguration implements WebMvcConfigurer {
 
     @Override
     public void addInterceptors(InterceptorRegistry registry) {
-        registry.addInterceptor(confirmInterceptor)
-                .addPathPatterns("/member/*")
-                .excludePathPatterns("/member/login")
+        registry.addInterceptor(confirmInterceptor) // 사용할 인터셉터 추가
+                .addPathPatterns("/member/*") // 인터셉트 적용 URL 명시
+                .excludePathPatterns("/member/login") // 적용 URL 중 제외할 URL 명시
                 .excludePathPatterns("/member/logout/*");
     }
 }

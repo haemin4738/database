@@ -10,10 +10,11 @@ import java.util.Map;
 public interface MemberMapper {
 
     @Insert("""
-            INSERT INTO member(account, password, email, nation, milege, phone, enLastName, enFirstName,
-                              koLastName, koFirstName, sex, birthday)
-                        VALUES(#{account}, #{password}, #{email}, #{nation}, #{milege}, #{phone}, #{enLastName}, #{enFirstName},
-                              #{koLastName}, #{koFirstName}, #{sex}, #{birthday})
+            INSERT INTO member(account, password, email, nation, milege, phone,
+                            enLastName, enFirstName, koLastName, koFirstName, sex, birthday)
+                    VALUES(#{account}, #{password}, #{email}, #{nation}, #{milege}, #{phone}, #{enLastName},
+                            #{enFirstName}, #{koLastName}, #{koFirstName}, #{sex}, #{birthday}
+                                )
             """)
     @Options(useGeneratedKeys = true, keyProperty = "id")
     void create(Member member);

@@ -1,6 +1,7 @@
 package com.koreatech.byeongcheonairlineapi.controller;
 
 import com.koreatech.byeongcheonairlineapi.dto.LoginDto;
+import com.koreatech.byeongcheonairlineapi.dto.SignUpDto;
 import com.koreatech.byeongcheonairlineapi.dto.domain.Member;
 import com.koreatech.byeongcheonairlineapi.exception.UnAuthorizeException;
 import com.koreatech.byeongcheonairlineapi.service.MemberService;
@@ -30,14 +31,14 @@ public class MemberController {
      * 회원 가입
      */
     @PostMapping("signUp")
-    public ResponseEntity<Map<String, Object>> signUp(@RequestBody Member member) {
+    public ResponseEntity<Map<String, Object>> signUp(@RequestBody SignUpDto signUpDto) {
         Map<String, Object> resultMap = new HashMap<>();
         try {
-            memberService.signUp(member);
+            memberService.signUp(signUpDto);
             resultMap.put("message", "SUCCESS!");
             return new ResponseEntity<>(resultMap, HttpStatus.OK);
         }catch (Exception e) {
-            log.error("ERROR! member : {}", member, e);
+            log.error("ERROR! member : {}", signUpDto, e);
             resultMap.put("message", "ERROR!");
             return new ResponseEntity<>(resultMap, HttpStatus.INTERNAL_SERVER_ERROR);
         }
@@ -107,7 +108,7 @@ public class MemberController {
      * 로그아웃
      */
     @PostMapping("member/logout/{account}")
-    public ResponseEntity<Map<String, Object>> logout(HttpServletRequest request, @PathVariable String account) {
+    public ResponseEntity<Map<String, Object>> logout(@PathVariable String account) {
         Map<String, Object> resultMap = new HashMap<>();
         try {
             memberService.logout(account);

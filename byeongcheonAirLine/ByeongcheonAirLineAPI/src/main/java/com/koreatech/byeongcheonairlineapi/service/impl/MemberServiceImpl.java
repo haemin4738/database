@@ -1,6 +1,7 @@
 package com.koreatech.byeongcheonairlineapi.service.impl;
 
 import com.koreatech.byeongcheonairlineapi.dto.LoginDto;
+import com.koreatech.byeongcheonairlineapi.dto.SignUpDto;
 import com.koreatech.byeongcheonairlineapi.dto.domain.Member;
 import com.koreatech.byeongcheonairlineapi.exception.UnAuthorizeException;
 import com.koreatech.byeongcheonairlineapi.mapper.MemberMapper;
@@ -30,7 +31,9 @@ public class MemberServiceImpl implements MemberService {
     }
 
     @Override
-    public void signUp(Member member) {
+    public void signUp(SignUpDto signUpDto) {
+        if (!signUpDto.getMember().getPassword().equals(signUpDto.getPassword2())) throw new IllegalArgumentException();
+        Member member = signUpDto.getMember();
         member.setPassword(passwordEncoder.encode(member.getPassword()));
         memberMapper.create(member);
     }

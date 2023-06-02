@@ -8,8 +8,8 @@ import java.sql.Timestamp;
 public class Flight {
     private int id;
     private int planeId;
-    private String departure;
-    private String arrival;
+    private int departureId;
+    private int arrivalId;
     private Timestamp departureTime;
     private long duration;
     private int price;

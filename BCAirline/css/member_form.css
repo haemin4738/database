@@ -1,7 +1,7 @@
 .summit-form {
-    display: block;
-    margin: 10%;
-    box-shadow: 2px 2px 4px rgba(0, 0, 0, 0.2); /* 그늘 효과 추가 */
+  display: block;
+  margin: 10%;
+  box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.2); /* 그늘 효과 추가 */
 }
 
 /*
@@ -11,15 +11,16 @@
 */
 
 .label {
-    width: 200px;
+  width: 200px;
 }
 
 .col {
-    width: 90%;
-    margin : 30px;
+  width: 90%;
+  margin: 30px;
 }
 
 .col-12 {
-    width: 90%;
-    margin : 50px;
+  width: 90%;
+  margin-left: 30px;
+  padding-bottom: 30px;
 }

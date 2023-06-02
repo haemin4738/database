@@ -1,0 +1,25 @@
+.summit-form {
+    display: block;
+    margin: 10%;
+    box-shadow: 2px 2px 4px rgba(0, 0, 0, 0.2); /* 그늘 효과 추가 */
+}
+
+/*
+.outer {
+    border: 1px solid gray;
+}
+*/
+
+.label {
+    width: 200px;
+}
+
+.col {
+    width: 90%;
+    margin : 30px;
+}
+
+.col-12 {
+    width: 90%;
+    margin : 50px;
+}

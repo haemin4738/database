@@ -1,6 +1,7 @@
 package com.koreatech.byeongcheonairlineapi.interceptor;
 
 
+import com.koreatech.byeongcheonairlineapi.exception.UnAuthorizeException;
 import com.koreatech.byeongcheonairlineapi.service.JwtService;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
@@ -29,9 +30,7 @@ public class ConfirmInterceptor implements HandlerInterceptor {
         log.debug("userId : {}", jwtService.getInfo("account", accessToken));
         if (jwtService.checkToken(accessToken)) return true;
         else {
-//            response.sendError(HttpStatus.UNAUTHORIZED.value());
-            response.sendError(HttpStatus.UNAUTHORIZED.value(), "ACCESS TOKEN 만료! ACCESS 토큰을 재발급 받으세요.");
-            return false;
+            throw new UnAuthorizeException();
         }
     }
 }

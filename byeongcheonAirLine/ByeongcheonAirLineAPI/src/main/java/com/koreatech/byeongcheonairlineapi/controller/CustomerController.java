@@ -21,7 +21,7 @@ public class CustomerController {
     }
 
     /**
-     * 비회원 전체 조회
+     * 고객 전체 조회
      */
     @GetMapping("customers")
     public ResponseEntity<Map<String, Object>> findAll() {
@@ -36,8 +36,13 @@ public class CustomerController {
         }
     }
 
+    /**
+     * 고객 id 조회
+     * @param id
+     * @return
+     */
     @GetMapping("customer/{id}")
-    public ResponseEntity<Map<String, Object>> findById(@PathVariable("id") int id) {
+    public ResponseEntity<Map<String, Object>> findById(@PathVariable int id) {
         Map<String, Object> resultMap = new HashMap<>();
         try {
             resultMap.put("customer", customerService.findById(id));

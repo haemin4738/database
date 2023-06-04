@@ -19,13 +19,13 @@ public interface CustomerMapper {
 
     @Select("""
             SELECT *
-            FROM customer;
+            FROM customer
             """)
     List<Customer> findAll();
 
     @Select("""
             SELECT *
-            FROM customer;
+            FROM customer
             WHERE id = #{id}
             """)
     Customer findById(int id);

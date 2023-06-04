@@ -29,6 +29,6 @@ public class CustomerImpl implements CustomerService {
 
     @Override
     public Customer findById(int id) {
-        return null;
+        return customerMapper.findById(id);
     }
 }

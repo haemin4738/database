@@ -48,20 +48,4 @@ public class MemberController {
     public void logout() {
 
     }
-
-    /**
-     * 테스트
-     */
-    @RequestMapping("test")
-    public ResponseEntity<Map<String, Object>> test() {
-        Map<String, Object> resultMap = new HashMap<>();
-        try {
-            resultMap.put("message", "SUCCESS");
-        } catch(Exception e) {
-            resultMap.put("message", "ERROR");
-            return new ResponseEntity<>(resultMap, HttpStatus.INTERNAL_SERVER_ERROR);
-        }
-        return new ResponseEntity<>(resultMap, HttpStatus.OK);
-    }
-    //테스트++
 }

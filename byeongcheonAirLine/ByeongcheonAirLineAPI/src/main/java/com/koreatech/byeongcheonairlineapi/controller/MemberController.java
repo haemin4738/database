@@ -29,9 +29,18 @@ public class MemberController {
 
     /**
      * 회원 가입
+     * http://IP주소/signUp
      */
+
+
     @PostMapping("signUp")
-    public ResponseEntity<Map<String, Object>> signUp(@RequestBody SignUpDto signUpDto) {
+    public ResponseEntity<Map<String, Object>> signUp(@RequestBody Member member) {
+
+        SignUpDto signUpDto = new SignUpDto();
+        signUpDto.setMember(member);
+        signUpDto.setPassword2(member.getPassword2());
+
+
         Map<String, Object> resultMap = new HashMap<>();
         try {
             memberService.signUp(signUpDto);
@@ -43,6 +52,8 @@ public class MemberController {
             return new ResponseEntity<>(resultMap, HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
+
+
 
     /**
      * 로그인

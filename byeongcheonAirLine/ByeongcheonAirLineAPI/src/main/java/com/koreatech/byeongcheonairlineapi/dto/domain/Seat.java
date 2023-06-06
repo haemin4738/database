@@ -6,6 +6,5 @@ import lombok.Data;
 public class Seat {
     private int id;
     private String seatClass;
-    private boolean reserved;
     private int planeId;
 }

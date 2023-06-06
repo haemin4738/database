@@ -14,7 +14,6 @@ public class Member {
     private String password2;
 
 
-
     private Date birthday;
     private String email;
     private String nation;

@@ -7,6 +7,7 @@ import com.koreatech.byeongcheonairlineapi.exception.UnAuthorizeException;
 import com.koreatech.byeongcheonairlineapi.service.MemberService;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.extern.slf4j.Slf4j;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -34,13 +35,7 @@ public class MemberController {
 
 
     @PostMapping("signUp")
-    public ResponseEntity<Map<String, Object>> signUp(@RequestBody Member member) {
-
-        SignUpDto signUpDto = new SignUpDto();
-        signUpDto.setMember(member);
-        signUpDto.setPassword2(member.getPassword2());
-
-
+    public ResponseEntity<Map<String, Object>> signUp(@RequestBody SignUpDto signUpDto) {
         Map<String, Object> resultMap = new HashMap<>();
         try {
             memberService.signUp(signUpDto);

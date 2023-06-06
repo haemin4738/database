@@ -32,9 +32,21 @@ public class MemberServiceImpl implements MemberService {
 
     @Override
     public void signUp(SignUpDto signUpDto) {
-        if (!signUpDto.getMember().getPassword().equals(signUpDto.getPassword2())) throw new IllegalArgumentException();
-        Member member = signUpDto.getMember();
-        member.setPassword(passwordEncoder.encode(member.getPassword()));
+        if (!signUpDto.getPassword().equals(signUpDto.getPassword2())) throw new IllegalArgumentException();
+
+        Member member = new Member();
+        member.setAccount(signUpDto.getAccount());
+        member.setBirthday(signUpDto.getBirthday());
+        member.setEmail(signUpDto.getEmail());
+        member.setNation(signUpDto.getNation());
+        member.setPhone(signUpDto.getPhone());
+        member.setSex(signUpDto.getSex());
+        member.setEnFirstName(signUpDto.getEnFirstName());
+        member.setEnLastName(signUpDto.getEnLastName());
+        member.setKoFirstName(signUpDto.getKoFirstName());
+        member.setKoLastName(signUpDto.getKoLastName());
+        member.setPassword(passwordEncoder.encode(signUpDto.getPassword()));
+
         memberMapper.create(member);
     }
 

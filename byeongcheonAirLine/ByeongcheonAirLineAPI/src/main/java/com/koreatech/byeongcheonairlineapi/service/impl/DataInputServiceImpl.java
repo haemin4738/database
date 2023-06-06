@@ -170,12 +170,6 @@ public class DataInputServiceImpl implements DataInputService {
                 flightMapper.insert(backOver);
                 planeId++;
             }
-
-
         }
-
-
-
     }
-
 }

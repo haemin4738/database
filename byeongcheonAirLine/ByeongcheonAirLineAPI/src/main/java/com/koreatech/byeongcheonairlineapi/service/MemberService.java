@@ -1,6 +1,7 @@
 package com.koreatech.byeongcheonairlineapi.service;
 
 import com.koreatech.byeongcheonairlineapi.dto.LoginDto;
+import com.koreatech.byeongcheonairlineapi.dto.MemberDto;
 import com.koreatech.byeongcheonairlineapi.dto.SignUpDto;
 import com.koreatech.byeongcheonairlineapi.dto.domain.Member;
 
@@ -18,4 +19,6 @@ public interface MemberService {
     String refresh(String token);
 
     void logout(String account);
+
+    MemberDto findByAccount(String account);
 }

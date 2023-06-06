@@ -131,6 +131,28 @@ public class MemberController {
         }
     }
 
+    /**
+     * 회원 조회 API
+     * @param account : 회원을 조회할 회원 ID
+     * @return : 응답 결과, 회원 정보
+     */
+    @GetMapping("member/{account}")
+    public ResponseEntity<Map<String, Object>> findByAccount(@PathVariable String account) {
+        Map<String, Object> resultMap = new HashMap<>();
+        HttpStatus httpStatus;
+        try {
+            resultMap.put("member", memberService.findByAccount(account));
+            resultMap.put("message", "SUCCESS!");
+            httpStatus = HttpStatus.OK;
+        }catch (IllegalArgumentException e) {
+            httpStatus = HttpStatus.NOT_FOUND;
+            resultMap.put("message", "CAN'T FIND MEMBER");
+        }catch (Exception e) {
+            httpStatus = HttpStatus.INTERNAL_SERVER_ERROR;
+            resultMap.put("message", "SERVER ERROR!");
+        }
+        return new ResponseEntity<>(resultMap, httpStatus);
+    }
     @GetMapping("member/token-test")
     public String test() {
         return "Valid!";

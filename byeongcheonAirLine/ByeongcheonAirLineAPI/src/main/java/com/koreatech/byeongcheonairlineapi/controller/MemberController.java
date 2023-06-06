@@ -29,11 +29,10 @@ public class MemberController {
 
 
     /**
-     * 회원 가입
-     * http://IP주소/signUp
+     * 회원 가입 API
+     * @param signUpDto : 사용자 회원 가입 입력 DTO
+     * @return : 응답 결과
      */
-
-
     @PostMapping("signUp")
     public ResponseEntity<Map<String, Object>> signUp(@RequestBody SignUpDto signUpDto) {
         Map<String, Object> resultMap = new HashMap<>();
@@ -49,9 +48,10 @@ public class MemberController {
     }
 
 
-
     /**
-     * 로그인
+     * 로그인 API
+     * @param loginDto : 사용자 로그인 입력 DTO
+     * @return : 응답 결과, ACCESS-TOKEN, REFRESH-TOKEN
      */
     @PostMapping("member/login")
     public ResponseEntity<Map<String, Object>> login(@RequestBody LoginDto loginDto) {
@@ -72,7 +72,8 @@ public class MemberController {
     }
 
     /**
-     * 회원 전체 조회
+     * 회원 전체 조회 API
+     * @return : 응답 결과, 회원 목록
      */
     @GetMapping("members")
     public ResponseEntity<Map<String, Object>> findAll() {
@@ -88,7 +89,9 @@ public class MemberController {
     }
 
     /**
-     * AccessToken 재발급
+     * ACCESS-TOKEN 재발급 API
+     * @param request : HTTP request
+     * @return : 응답 결과, ACCESS-TOKEN
      */
     @GetMapping("token")
     public ResponseEntity<Map<String, Object>> refresh(HttpServletRequest request) {
@@ -111,7 +114,9 @@ public class MemberController {
     }
 
     /**
-     * 로그아웃
+     * 로그이웃 API
+     * @param account : 사용자 ID(account)
+     * @return : 응답 결과
      */
     @PostMapping("member/logout/{account}")
     public ResponseEntity<Map<String, Object>> logout(@PathVariable String account) {

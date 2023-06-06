@@ -9,7 +9,6 @@ import java.sql.Timestamp;
 @NoArgsConstructor
 public class Flight {
     private int id;
-
     private int planeId;
     private int departureId;
     private int arrivalId;

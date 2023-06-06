@@ -9,11 +9,6 @@ public class Member {
     private int id;
     private String account;
     private String password;
-
-
-    private String password2;
-
-
     private Date birthday;
     private String email;
     private String nation;

@@ -42,6 +42,6 @@ public class TicketServiceImpl implements TicketService {
         if (member == null || !passwordEncoder.matches(loginDto.getPassword(), member.getPassword())) {
             throw new IllegalArgumentException("해당 ID와 PASSWORD가 일치하는 회원이 없음.");
         }
-        return ticketMapper.findByMember(loginDto.getAccount());
+        return ticketMapper.findByAccount(loginDto.getAccount());
     }
 }

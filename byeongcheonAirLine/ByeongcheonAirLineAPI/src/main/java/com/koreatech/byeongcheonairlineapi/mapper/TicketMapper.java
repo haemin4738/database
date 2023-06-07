@@ -29,5 +29,5 @@ public interface TicketMapper {
             ON m.id = t.memberId
             WHERE m.account = #{account}
             """)
-    Ticket findByMember(String account);
+    Ticket findByAccount(String account);
 }

@@ -1,8 +1,10 @@
 package com.koreatech.byeongcheonairlineapi.service;
 
+import java.io.IOException;
+
 public interface DataInputService {
 
-    void insertLocation();
+    void insertLocation() throws IOException;
 
     void insertPlane();
 

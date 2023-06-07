@@ -2,7 +2,6 @@ package com.koreatech.byeongcheonairlineapi.controller;
 
 import com.koreatech.byeongcheonairlineapi.dto.LoginDto;
 import com.koreatech.byeongcheonairlineapi.dto.SignUpDto;
-import com.koreatech.byeongcheonairlineapi.dto.domain.Member;
 import com.koreatech.byeongcheonairlineapi.exception.UnAuthorizeException;
 import com.koreatech.byeongcheonairlineapi.service.MemberService;
 import jakarta.servlet.http.HttpServletRequest;
@@ -64,7 +63,7 @@ public class MemberController {
             return new ResponseEntity<>(resultMap, HttpStatus.OK);
         }catch (IllegalArgumentException e) {
             resultMap.put("message", e.getMessage());
-            return new ResponseEntity<>(resultMap, HttpStatus.NO_CONTENT);
+            return new ResponseEntity<>(resultMap, HttpStatus.NOT_FOUND);
         }catch (Exception e) {
             resultMap.put("message", "SERVER ERROR!");
             return new ResponseEntity<>(resultMap, HttpStatus.INTERNAL_SERVER_ERROR);

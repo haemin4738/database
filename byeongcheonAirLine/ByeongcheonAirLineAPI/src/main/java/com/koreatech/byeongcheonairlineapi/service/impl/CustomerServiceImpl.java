@@ -9,11 +9,11 @@ import org.springframework.stereotype.Service;
 import java.util.List;
 
 @Service
-public class CustomerImpl implements CustomerService {
+public class CustomerServiceImpl implements CustomerService {
     private final CustomerMapper customerMapper;
 
     @Autowired
-    public CustomerImpl(CustomerMapper customerMapper) {
+    public CustomerServiceImpl(CustomerMapper customerMapper) {
         this.customerMapper = customerMapper;
     }
 

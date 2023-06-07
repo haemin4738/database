@@ -5,7 +5,7 @@ import lombok.Data;
 import java.sql.Timestamp;
 
 @Data
-public class ticket {
+public class Ticket {
     private int id;
     private String state;
     private Timestamp reserveDate;

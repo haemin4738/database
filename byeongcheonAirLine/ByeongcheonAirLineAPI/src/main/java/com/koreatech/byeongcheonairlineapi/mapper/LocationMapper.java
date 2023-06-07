@@ -1,24 +1,27 @@
 package com.koreatech.byeongcheonairlineapi.mapper;
 
-import com.koreatech.byeongcheonairlineapi.dto.domain.Location;
-import org.apache.ibatis.annotations.Insert;
+import com.koreatech.byeongcheonairlineapi.dto.LocationTmpDto;
 import org.apache.ibatis.annotations.Mapper;
-import org.apache.ibatis.annotations.Options;
-import org.apache.ibatis.annotations.Update;
+import org.apache.ibatis.annotations.Select;
+
+import java.util.List;
 
 @Mapper
 public interface LocationMapper {
-    @Insert("""
-               INSERT INTO location(name, nation)
-               VALUES (#{name}, #{nation})
-            """)
-    @Options(useGeneratedKeys = true, keyProperty = "id")
-    void insert(Location location);
 
-    @Update("""
-            UPDATE location 
-            SET duration = #{duration}
-            WHERE name = #{name}
+    @Select("""
+            SELECT *
+            FROM location
+            WHERE duration BETWEEN 1 AND 6
+            ORDER BY id;
             """)
-    void update(Location location);
+    List<LocationTmpDto> getUnder7Hours();
+    @Select("""
+            SELECT *
+            FROM location
+            WHERE duration >= 7
+            ORDER BY id;
+            """)
+    List<LocationTmpDto> getOver7Hours();
+
 }

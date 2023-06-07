@@ -7,4 +7,12 @@ import org.apache.ibatis.annotations.Options;
 
 @Mapper
 public interface FlightMapper {
+
+    @Insert("""
+            INSERT INTO flight(planeId, departureId, arrivalId, departureTime, duration, price)
+                    VALUES(#{planeId}, #{departureId}, #{arrivalId}, #{departureTime}, #{duration}, #{price})
+            """)
+    @Options(useGeneratedKeys = true, keyProperty = "id")
+    void insert(Flight flight);
+
 }

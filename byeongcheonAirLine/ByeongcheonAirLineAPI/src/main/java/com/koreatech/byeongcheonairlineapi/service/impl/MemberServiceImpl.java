@@ -1,6 +1,7 @@
 package com.koreatech.byeongcheonairlineapi.service.impl;
 
 import com.koreatech.byeongcheonairlineapi.dto.LoginDto;
+import com.koreatech.byeongcheonairlineapi.dto.MemberDto;
 import com.koreatech.byeongcheonairlineapi.dto.SignUpDto;
 import com.koreatech.byeongcheonairlineapi.dto.domain.Member;
 import com.koreatech.byeongcheonairlineapi.exception.UnAuthorizeException;
@@ -12,6 +13,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -117,6 +120,25 @@ public class MemberServiceImpl implements MemberService {
     @Override
     public void logout(String account) {
        memberMapper.deleteTokenByAccount(account);
+    }
+
+    @Override
+    public MemberDto findByAccount(String account) {
+        Member member = memberMapper.findByAccount(account);
+        if (member == null) throw new IllegalArgumentException();
+
+        SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
+
+
+        MemberDto memberDto = new MemberDto(
+                member.getEnLastName(),
+                member.getEnFirstName(),
+                member.getSex(),
+                formatter.format(member.getBirthday()),
+                member.getPhone(),
+                member.getEmail()
+                );
+        return memberDto;
     }
 
 

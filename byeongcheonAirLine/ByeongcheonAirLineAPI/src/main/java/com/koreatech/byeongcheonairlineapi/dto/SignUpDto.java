@@ -1,7 +1,5 @@
 package com.koreatech.byeongcheonairlineapi.dto;
 
-import com.fasterxml.jackson.databind.DatabindException;
-import com.koreatech.byeongcheonairlineapi.dto.domain.Member;
 import lombok.Data;
 
 import java.util.Date;

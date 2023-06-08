@@ -30,4 +30,9 @@ public class DataInputController {
 //        dataInputService.insertSeat();
 //        dataInputService.insertFlight();
     }
+
+    @GetMapping("test2")
+    public void test() {
+//        dataInputService.seatTest();
+    }
 }

@@ -1,8 +1,8 @@
 package com.koreatech.byeongcheonairlineapi.controller;
 
 
-import com.koreatech.byeongcheonairlineapi.dto.FlightDto;
-import com.koreatech.byeongcheonairlineapi.dto.Model.FlightModel;
+import com.koreatech.byeongcheonairlineapi.dto.Model.ResponseFlight;
+import com.koreatech.byeongcheonairlineapi.dto.Model.RequestFlight;
 import com.koreatech.byeongcheonairlineapi.service.FlightService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -29,39 +29,40 @@ public class FlightController {
 
 
     @GetMapping("departure")
-    public ResponseEntity<Map<String, Object>> findDepartures(@RequestBody FlightModel flightModel) {
+    public ResponseEntity<Map<String, Object>> findDepartures(@RequestBody RequestFlight requestFlight) {
         Map<String, Object> resultMap = new HashMap<>();
         HttpStatus httpStatus;
         try {
-            List<FlightDto> flights = flightService.goTrip(flightModel);
-            if (flights == null || flights.size() == 0) {
+            List<ResponseFlight> responseFlights = flightService.goTrip(requestFlight);
+            if (responseFlights == null || responseFlights.size() == 0) {
                 httpStatus = HttpStatus.NO_CONTENT;
-                log.error("flights : {}", flights);
+                log.error("flights : {}", responseFlights);
             }
             else {
                 httpStatus = HttpStatus.OK;
             }
-            resultMap.put("flights", flights);
+            resultMap.put("flights", responseFlights);
             resultMap.put("message", "SUCCESS!");
         }catch (Exception e) {
             resultMap.put("message", "ERROR!");
             httpStatus = HttpStatus.INTERNAL_SERVER_ERROR;
+            log.error("error!", e);
         }
         return new ResponseEntity<>(resultMap, httpStatus);
     }
     @GetMapping("arrival")
-    public ResponseEntity<Map<String, Object>> findArrivals(@RequestBody FlightModel flightModel) {
+    public ResponseEntity<Map<String, Object>> findArrivals(@RequestBody RequestFlight requestFlight) {
         Map<String, Object> resultMap = new HashMap<>();
         HttpStatus httpStatus;
         try {
-            List<FlightDto> flights = flightService.comeHome(flightModel);
-            if (flights == null || flights.size() == 0) {
+            List<ResponseFlight> responseFlights = flightService.comeHome(requestFlight);
+            if (responseFlights == null || responseFlights.size() == 0) {
                 httpStatus = HttpStatus.NO_CONTENT;
             }
             else {
                 httpStatus = HttpStatus.OK;
             }
-            resultMap.put("flights", flights);
+            resultMap.put("flights", responseFlights);
             resultMap.put("message", "SUCCESS!");
         }catch (Exception e) {
             resultMap.put("message", "ERROR!");

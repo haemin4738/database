@@ -10,5 +10,7 @@ public interface DataInputService {
 
     void insertSeat();
 
+    void seatTest();
+
     void insertFlight();
 }

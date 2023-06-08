@@ -5,7 +5,7 @@ import lombok.Data;
 import java.util.Date;
 
 @Data
-public class FlightModel {
+public class RequestFlight {
     // 왕복 여부
     private boolean isRoundTrip;
     // 출발지

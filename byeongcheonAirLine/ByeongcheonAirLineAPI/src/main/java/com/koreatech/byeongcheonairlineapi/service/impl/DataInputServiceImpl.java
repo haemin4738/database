@@ -90,6 +90,12 @@ public class DataInputServiceImpl implements DataInputService {
             }
         }
     }
+    @Override
+    public void seatTest() {
+        String str = """
+                SELECT * FROM seat
+                """;
+    }
 
     @Override
     public void insertFlight() {

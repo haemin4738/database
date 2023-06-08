@@ -1,10 +1,7 @@
 package com.koreatech.byeongcheonairlineapi.mapper;
 
 import com.koreatech.byeongcheonairlineapi.dto.domain.Ticket;
-import org.apache.ibatis.annotations.Insert;
-import org.apache.ibatis.annotations.Mapper;
-import org.apache.ibatis.annotations.Options;
-import org.apache.ibatis.annotations.Select;
+import org.apache.ibatis.annotations.*;
 
 import java.util.List;
 
@@ -38,4 +35,17 @@ public interface TicketMapper {
             """)
     @Options(useGeneratedKeys = true, keyProperty = "id")
     void insert(Ticket ticket);
+
+    @Update("""
+            UPDATE ticket
+            SET state = 'canceled'
+            WHERE id = #{id}
+            """)
+    void cancelById(int id);
+
+    @Delete("""
+            DELETE FROM ticket
+            WHERE id = #{id}
+            """)
+    void deleteById(int id);
 }

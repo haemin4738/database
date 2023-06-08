@@ -51,4 +51,14 @@ public class TicketServiceImpl implements TicketService {
     public void insert(Ticket ticket) {
         ticketMapper.insert(ticket);
     }
+
+    @Override
+    public void cacnelById(int id) {
+        ticketMapper.cancelById(id);
+    }
+
+    @Override
+    public void deleteById(int id) {
+        ticketMapper.deleteById(id);
+    }
 }

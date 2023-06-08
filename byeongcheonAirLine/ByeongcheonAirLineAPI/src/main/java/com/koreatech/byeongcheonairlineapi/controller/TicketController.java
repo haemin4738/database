@@ -1,8 +1,6 @@
 package com.koreatech.byeongcheonairlineapi.controller;
 
 import com.koreatech.byeongcheonairlineapi.dto.LoginDto;
-import com.koreatech.byeongcheonairlineapi.dto.MemberDto;
-import com.koreatech.byeongcheonairlineapi.dto.domain.Member;
 import com.koreatech.byeongcheonairlineapi.service.MemberService;
 import com.koreatech.byeongcheonairlineapi.service.TicketService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -10,7 +8,6 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
 

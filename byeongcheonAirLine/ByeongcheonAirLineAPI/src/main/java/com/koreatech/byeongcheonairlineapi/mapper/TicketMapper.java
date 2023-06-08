@@ -38,10 +38,10 @@ public interface TicketMapper {
 
     @Update("""
             UPDATE ticket
-            SET state = 'canceled'
+            SET state = #{state}
             WHERE id = #{id}
             """)
-    void cancelById(int id);
+    void updateState(Ticket ticket);
 
     @Delete("""
             DELETE FROM ticket

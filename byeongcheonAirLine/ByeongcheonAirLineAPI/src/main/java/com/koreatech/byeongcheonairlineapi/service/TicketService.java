@@ -10,6 +10,6 @@ public interface TicketService {
     Ticket findByCustomerId(int id);
     Ticket findByMember(LoginDto loginDto);
     void insert(Ticket ticket);
-    void cacnelById(int id);
+    void updateState(Ticket ticket);
     void deleteById(int id);
 }

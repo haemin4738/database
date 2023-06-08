@@ -1,6 +1,7 @@
 package com.koreatech.byeongcheonairlineapi.controller;
 
 import com.koreatech.byeongcheonairlineapi.dto.LoginDto;
+import com.koreatech.byeongcheonairlineapi.dto.domain.Ticket;
 import com.koreatech.byeongcheonairlineapi.service.MemberService;
 import com.koreatech.byeongcheonairlineapi.service.TicketService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -74,15 +75,19 @@ public class TicketController {
     }
 
     /**
-     * 티켓 state canceled상태로 변경
+     * 티켓 상태 업데이트
      * @param id
+     * @param state
      * @return
      */
     @PutMapping("ticket/{id}")
-    public ResponseEntity<Map<String, Object>> cancelById(@PathVariable int id) {
+    public ResponseEntity<Map<String, Object>> updateState(@PathVariable int id, @RequestBody String state) {
         Map<String, Object> resultMap = new HashMap<>();
         try {
-            ticketService.cacnelById(id);
+            Ticket ticket = new Ticket();
+            ticket.setId(id);
+            ticket.setState(state);
+            ticketService.updateState(ticket);
             resultMap.put("message", "SUCCESS!");
             return new ResponseEntity<>(resultMap, HttpStatus.OK);
         } catch (Exception e) {

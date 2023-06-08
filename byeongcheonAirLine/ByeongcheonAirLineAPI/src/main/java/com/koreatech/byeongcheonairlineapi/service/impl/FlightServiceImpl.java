@@ -60,7 +60,8 @@ public class FlightServiceImpl implements FlightService {
                     availableSeats,
                     flightDto.getDeparture(),
                     flightDto.getArrival(),
-                    flightDto.getDuration()
+                    flightDto.getDuration(),
+                    flightDto.getFlightId()
             ));
 
         }

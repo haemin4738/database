@@ -1,6 +1,5 @@
 package com.koreatech.byeongcheonairlineapi.dto;
 
-
 import com.koreatech.byeongcheonairlineapi.dto.domain.Seat;
 import lombok.Data;
 

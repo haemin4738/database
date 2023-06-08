@@ -7,7 +7,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 public class ResponseFlight {
 
-    public ResponseFlight(String departureTime, String arrivalTime, String planeName, int availableSeats, String departure, String arrival, int duration) {
+    public ResponseFlight(String departureTime, String arrivalTime, String planeName, int availableSeats, String departure, String arrival, int duration, int flightId) {
         this.departureTime = departureTime;
         this.duration = duration;
         this.arrivalTime = arrivalTime;
@@ -15,7 +15,10 @@ public class ResponseFlight {
         this.availableSeats = availableSeats;
         this.departure = departure;
         this.arrival = arrival;
+        this.flightId = flightId;
     }
+
+    private int flightId;
     private int duration;
     private String departureTime;
     private String arrivalTime;

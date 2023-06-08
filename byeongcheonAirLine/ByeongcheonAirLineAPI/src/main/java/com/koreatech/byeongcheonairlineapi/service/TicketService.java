@@ -9,4 +9,6 @@ public interface TicketService {
     List<Ticket> findAll();
     Ticket findByCustomerId(int id);
     Ticket findByMember(LoginDto loginDto);
+
+    void insert(Ticket ticket);
 }

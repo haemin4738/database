@@ -44,4 +44,11 @@ public class TicketServiceImpl implements TicketService {
         }
         return ticketMapper.findByAccount(loginDto.getAccount());
     }
+
+
+    //ticket 데이터 넣기
+    @Override
+    public void insert(Ticket ticket) {
+        ticketMapper.insert(ticket);
+    }
 }

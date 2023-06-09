@@ -3,6 +3,7 @@ package com.koreatech.byeongcheonairlineapi.service.impl;
 import com.koreatech.byeongcheonairlineapi.dto.FlightDto;
 import com.koreatech.byeongcheonairlineapi.dto.Model.ResponseFlight;
 import com.koreatech.byeongcheonairlineapi.dto.Model.RequestFlight;
+import com.koreatech.byeongcheonairlineapi.dto.SeatPriceDto;
 import com.koreatech.byeongcheonairlineapi.dto.domain.Seat;
 import com.koreatech.byeongcheonairlineapi.mapper.FlightMapper;
 import com.koreatech.byeongcheonairlineapi.mapper.SeatMapper;
@@ -10,7 +11,6 @@ import com.koreatech.byeongcheonairlineapi.service.FlightService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-
 import java.util.*;
 import java.util.stream.Collectors;
 
@@ -18,9 +18,9 @@ import java.util.stream.Collectors;
 @Service
 public class FlightServiceImpl implements FlightService {
 
-    private final static Map<String, Integer> priceForSeatClass = new HashMap<>();
+    private final Map<String, Integer> priceForSeatClass = new HashMap<>();
 
-    static {
+    {
         priceForSeatClass.put("economy", 1);
         priceForSeatClass.put("business", 2);
         priceForSeatClass.put("first", 3);
@@ -48,7 +48,6 @@ public class FlightServiceImpl implements FlightService {
 
             List<Seat> reservedSeats = seatMapper.getReservedSeatsByFlightId(flightId);
 
-//            Set<Seat> flightSeats = new HashSet<>(flightDto.getSeats());
             Set<Seat> flightSeats = flightDto.getSeats().stream()
                     .filter(a -> a.getSeatClass().equals(requestFlight.getSeatClass()))
                     .collect(Collectors.toSet());
@@ -87,4 +86,7 @@ public class FlightServiceImpl implements FlightService {
         // 조건에 맞게 조회후 리턴.
         return goTrip(requestFlight);
     }
+
+
+
 }

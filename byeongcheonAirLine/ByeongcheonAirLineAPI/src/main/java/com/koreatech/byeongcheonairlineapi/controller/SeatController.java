@@ -2,6 +2,7 @@ package com.koreatech.byeongcheonairlineapi.controller;
 
 import com.koreatech.byeongcheonairlineapi.dto.domain.Plane;
 import com.koreatech.byeongcheonairlineapi.dto.domain.Seat;
+import com.koreatech.byeongcheonairlineapi.service.FlightService;
 import com.koreatech.byeongcheonairlineapi.service.PlaneService;
 import com.koreatech.byeongcheonairlineapi.service.SeatService;
 import lombok.extern.slf4j.Slf4j;
@@ -24,6 +25,7 @@ public class SeatController {
     private final SeatService seatService;
     private final PlaneService planeService;
 
+
     @Autowired
     public SeatController(SeatService seatService, PlaneService planeService) {
         this.seatService = seatService;
@@ -40,6 +42,7 @@ public class SeatController {
             httpStatus = HttpStatus.OK;
             resultMap.put("reservedSeats", reservedSeats);
             resultMap.put("planeName", plane.getName());
+            resultMap.put("seatPrice", seatService.findPriceByFlight(flightId));
             resultMap.put("message", "SUCCESS!");
 
         }catch (Exception e) {

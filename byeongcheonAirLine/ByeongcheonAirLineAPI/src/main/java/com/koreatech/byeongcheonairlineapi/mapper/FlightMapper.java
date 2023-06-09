@@ -6,6 +6,7 @@ import com.koreatech.byeongcheonairlineapi.dto.domain.Flight;
 import org.apache.ibatis.annotations.Insert;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Options;
+import org.apache.ibatis.annotations.Select;
 
 import java.util.List;
 
@@ -22,4 +23,7 @@ public interface FlightMapper {
 
 
     List<FlightDto> findByCondition(RequestFlight requestFlight);
+
+    @Select("SELECT * FROM flight WHERE id = #{id}")
+    Flight findById(int id);
 }

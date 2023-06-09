@@ -43,7 +43,7 @@ public class TicketController {
      * @param loginDto
      * @return
      */
-    @PostMapping("ticket")
+    @GetMapping("ticket")
     public ResponseEntity<Map<String, Object>> ticket(@RequestBody LoginDto loginDto) {
         Map<String, Object> resultMap = new HashMap<>();
         try {

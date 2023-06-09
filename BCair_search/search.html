@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>항공권 조회</title>
+    <link
+      rel="stylesheet"
+      href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css"
+    />
+    <style>
+      /* CSS 스타일을 여기에 작성하세요 */
+      .container {
+        max-width: 600px;
+        margin: 0 auto;
+        padding: 20px;
+      }
+
+      .form-group {
+        margin-bottom: 20px;
+      }
+
+      .form-group label {
+        display: block;
+        font-weight: bold;
+        margin-bottom: 5px;
+      }
+
+      .form-group input[type="date"],
+      .form-group input[type="text"],
+      .form-group select {
+        width: 100%;
+        padding: 10px;
+        border: 1px solid #ccc;
+        border-radius: 3px;
+        font-size: 14px;
+      }
+
+      .form-group select {
+        height: 40px;
+      }
+
+      .form-group input[type="submit"] {
+        padding: 10px 20px;
+        background-color: #004088;
+        color: #fff;
+        border: none;
+        border-radius: 3px;
+        cursor: pointer;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="container">
+      <h2>항공권 조회</h2>
+      <ul class="nav nav-tabs">
+        <li class="nav-item">
+          <a
+            class="nav-link active"
+            id="oneWayTab"
+            data-toggle="tab"
+            href="#oneWayForm"
+            >편도</a
+          >
+        </li>
+        <li class="nav-item">
+          <a
+            class="nav-link"
+            id="roundTripTab"
+            data-toggle="tab"
+            href="#roundTripForm"
+            >왕복</a
+          >
+        </li>
+      </ul>
+      <div class="tab-content">
+        <div class="tab-pane fade show active" id="oneWayForm">
+          <form id="searchForm" action="result.html" method="GET">
+            <div class="form-group">
+              <label for="departureDate">가는날:</label>
+              <input
+                type="date"
+                id="departureDate"
+                name="departureDate"
+                required
+              />
+            </div>
+            <div class="form-group">
+              <label for="departureCity">출발지:</label>
+              <input
+                type="text"
+                id="departureCity"
+                name="departureCity"
+                required
+              />
+            </div>
+            <div class="form-group">
+              <label for="arrivalCity">도착지:</label>
+              <input type="text" id="arrivalCity" name="arrivalCity" required />
+            </div>
+            <div class="form-group">
+              <label for="seatClass">좌석 등급:</label>
+              <select id="seatClass" name="seatClass" required>
+                <option value="">선택하세요</option>
+                <option value="first">퍼스트</option>
+                <option value="business">비지니스</option>
+                <option value="economy">이코노미</option>
+              </select>
+            </div>
+            <div class="form-group">
+              <input type="submit" value="조회" />
+            </div>
+          </form>
+        </div>
+        <div class="tab-pane fade" id="roundTripForm">
+          <form id="searchForm" action="result.html" method="GET">
+            <div class="form-group">
+              <label for="departureDate">가는날:</label>
+              <input
+                type="date"
+                id="departureDate"
+                name="departureDate"
+                required
+              />
+            </div>
+            <div class="form-group">
+              <label for="arrivalDate">오는날:</label>
+              <input type="date" id="arrivalDate" name="arrivalDate" required />
+            </div>
+            <div class="form-group">
+              <label for="departureCity">출발지:</label>
+              <input
+                type="text"
+                id="departureCity"
+                name="departureCity"
+                required
+              />
+            </div>
+            <div class="form-group">
+              <label for="arrivalCity">도착지:</label>
+              <input type="text" id="arrivalCity" name="arrivalCity" required />
+            </div>
+            <div class="form-group">
+              <label for="seatClass">좌석 등급:</label>
+              <select id="seatClass" name="seatClass" required>
+                <option value="">선택하세요</option>
+                <option value="first">퍼스트</option>
+                <option value="business">비지니스</option>
+                <option value="economy">이코노미</option>
+              </select>
+            </div>
+            <div class="form-group">
+              <input type="submit" value="조회" />
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.5.2/dist/js/bootstrap.bundle.min.js"></script>
+  </body>
+</html>

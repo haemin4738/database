@@ -18,9 +18,9 @@ import java.util.stream.Collectors;
 @Service
 public class FlightServiceImpl implements FlightService {
 
-    private final Map<String, Integer> priceForSeatClass = new HashMap<>();
+    private final static Map<String, Integer> priceForSeatClass = new HashMap<>();
 
-    {
+    static {
         priceForSeatClass.put("economy", 1);
         priceForSeatClass.put("business", 2);
         priceForSeatClass.put("first", 3);
@@ -68,7 +68,7 @@ public class FlightServiceImpl implements FlightService {
                     flightDto.getArrival(),
                     flightDto.getDuration(),
                     flightDto.getFlightId(),
-                    0
+                    flightDto.getPrice() * priceForSeatClass.get(requestFlight.getSeatClass())
             ));
 
         }

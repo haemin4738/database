@@ -11,14 +11,20 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 import java.util.stream.Collectors;
 
 @Slf4j
 @Service
 public class FlightServiceImpl implements FlightService {
+
+    private final Map<String, Integer> priceForSeatClass = new HashMap<>();
+
+    {
+        priceForSeatClass.put("economy", 1);
+        priceForSeatClass.put("business", 2);
+        priceForSeatClass.put("first", 3);
+    }
 
     private final FlightMapper flightMapper;
     private final SeatMapper seatMapper;
@@ -61,7 +67,8 @@ public class FlightServiceImpl implements FlightService {
                     flightDto.getDeparture(),
                     flightDto.getArrival(),
                     flightDto.getDuration(),
-                    flightDto.getFlightId()
+                    flightDto.getFlightId(),
+                    0
             ));
 
         }

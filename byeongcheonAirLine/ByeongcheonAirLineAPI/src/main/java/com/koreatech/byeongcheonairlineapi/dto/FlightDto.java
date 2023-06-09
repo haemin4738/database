@@ -14,5 +14,6 @@ public class FlightDto {
     private String departure;
     private String arrival;
     private String planeName;
+    private int price;
     private List<Seat> seats;
 }

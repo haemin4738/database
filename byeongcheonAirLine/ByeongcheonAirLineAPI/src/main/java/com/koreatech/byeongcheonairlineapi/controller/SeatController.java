@@ -2,7 +2,6 @@ package com.koreatech.byeongcheonairlineapi.controller;
 
 import com.koreatech.byeongcheonairlineapi.dto.domain.Plane;
 import com.koreatech.byeongcheonairlineapi.dto.domain.Seat;
-import com.koreatech.byeongcheonairlineapi.service.FlightService;
 import com.koreatech.byeongcheonairlineapi.service.PlaneService;
 import com.koreatech.byeongcheonairlineapi.service.SeatService;
 import lombok.extern.slf4j.Slf4j;

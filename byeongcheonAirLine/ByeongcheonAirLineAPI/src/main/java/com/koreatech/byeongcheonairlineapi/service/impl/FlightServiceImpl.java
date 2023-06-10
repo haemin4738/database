@@ -3,7 +3,6 @@ package com.koreatech.byeongcheonairlineapi.service.impl;
 import com.koreatech.byeongcheonairlineapi.dto.FlightDto;
 import com.koreatech.byeongcheonairlineapi.dto.Model.ResponseFlight;
 import com.koreatech.byeongcheonairlineapi.dto.Model.RequestFlight;
-import com.koreatech.byeongcheonairlineapi.dto.SeatPriceDto;
 import com.koreatech.byeongcheonairlineapi.dto.domain.Seat;
 import com.koreatech.byeongcheonairlineapi.mapper.FlightMapper;
 import com.koreatech.byeongcheonairlineapi.mapper.SeatMapper;

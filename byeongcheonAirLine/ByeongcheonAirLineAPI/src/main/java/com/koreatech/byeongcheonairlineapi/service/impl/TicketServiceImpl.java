@@ -35,6 +35,7 @@ public class TicketServiceImpl implements TicketService {
         List<ResponseTicket> tickets = ticketMapper.findByCustomer(id);
         for (ResponseTicket ticket : tickets) {
             ticket.setSeatId(ticket.getSeatId() % 200);
+            if (ticket.getSeatId() == 0) ticket.setSeatId(200);
         }
         return tickets;
     }
@@ -50,6 +51,7 @@ public class TicketServiceImpl implements TicketService {
         List<ResponseTicket> tickets = ticketMapper.findByMember(loginDto.getAccount());
         for (ResponseTicket ticket : tickets) {
             ticket.setSeatId(ticket.getSeatId() % 200);
+            if (ticket.getSeatId() == 0) ticket.setSeatId(200);
         }
         return tickets;
     }

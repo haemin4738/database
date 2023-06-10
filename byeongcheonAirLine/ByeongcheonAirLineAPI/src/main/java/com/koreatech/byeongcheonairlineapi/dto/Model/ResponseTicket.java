@@ -4,13 +4,13 @@ import lombok.Data;
 
 @Data
 public class ResponseTicket {
-    int id;
-    String departureLocation;
-    String arrivalLocation;
-    String departureTime;
-    String arrivalTime;
-    String seatClass;
-    String planeName;
-    int seatId;
-    String state;
+    private int id;
+    private String departureLocation;
+    private String arrivalLocation;
+    private String departureTime;
+    private String arrivalTime;
+    private String seatClass;
+    private String planeName;
+    private int seatId;
+    private String state;
 }

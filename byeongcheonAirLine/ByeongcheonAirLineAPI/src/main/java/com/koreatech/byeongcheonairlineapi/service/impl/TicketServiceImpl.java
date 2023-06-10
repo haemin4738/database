@@ -1,6 +1,7 @@
 package com.koreatech.byeongcheonairlineapi.service.impl;
 
 import com.koreatech.byeongcheonairlineapi.dto.LoginDto;
+import com.koreatech.byeongcheonairlineapi.dto.Model.ResponseTicket;
 import com.koreatech.byeongcheonairlineapi.dto.domain.Member;
 import com.koreatech.byeongcheonairlineapi.dto.domain.Ticket;
 import com.koreatech.byeongcheonairlineapi.mapper.MemberMapper;
@@ -30,19 +31,19 @@ public class TicketServiceImpl implements TicketService {
 
     //비회원 id로 티켓 조회
     @Override
-    public Ticket findByCustomerId(int id) {
-        return ticketMapper.findById(id);
+    public List<ResponseTicket> findByCustomer(int id) {
+        return ticketMapper.findByCustomer(id);
     }
 
     //회원 계정으로 티켓 조회
     @Override
-    public Ticket findByMember(LoginDto loginDto) {
+    public List<ResponseTicket> findByMember(LoginDto loginDto) {
         Member member = memberMapper.findByAccount(loginDto.getAccount());
         // 아이디로 조회한 회원이 없거나 비밀 번호가 맞지 않을 경우 -> 예외 발생시키기.
         if (member == null || !passwordEncoder.matches(loginDto.getPassword(), member.getPassword())) {
             throw new IllegalArgumentException("해당 ID와 PASSWORD가 일치하는 회원이 없음.");
         }
-        return ticketMapper.findByAccount(loginDto.getAccount());
+        return ticketMapper.findByMember(loginDto.getAccount());
     }
 
 

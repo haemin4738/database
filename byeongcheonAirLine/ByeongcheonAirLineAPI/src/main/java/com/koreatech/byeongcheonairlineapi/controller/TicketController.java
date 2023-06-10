@@ -43,11 +43,11 @@ public class TicketController {
      * @param loginDto
      * @return
      */
-    @GetMapping("ticket")
+    @GetMapping("tickets/member")
     public ResponseEntity<Map<String, Object>> ticket(@RequestBody LoginDto loginDto) {
         Map<String, Object> resultMap = new HashMap<>();
         try {
-            resultMap.put("ticket", ticketService.findByMember(loginDto));
+            resultMap.put("tickets", ticketService.findByMember(loginDto));
             resultMap.put("message", "SUCCESS!");
             return new ResponseEntity<>(resultMap, HttpStatus.OK);
         } catch (Exception e){
@@ -61,11 +61,11 @@ public class TicketController {
      * @param id
      * @return
      */
-    @GetMapping("ticket/{id}")
+    @GetMapping("tickets/customer/{id}")
     public ResponseEntity<Map<String, Object>> ticket(@PathVariable int id) {
         Map<String, Object> resultMap = new HashMap<>();
         try {
-            resultMap.put("ticket", ticketService.findByCustomerId(id));
+            resultMap.put("tickets", ticketService.findByCustomer(id));
             resultMap.put("message", "SUCCESS!");
             return new ResponseEntity<>(resultMap, HttpStatus.OK);
         } catch (Exception e) {
@@ -80,7 +80,7 @@ public class TicketController {
      * @param state
      * @return
      */
-    @PutMapping("ticket/{id}")
+    @PutMapping("tickets/{id}")
     public ResponseEntity<Map<String, Object>> updateState(@PathVariable int id, @RequestBody String state) {
         Map<String, Object> resultMap = new HashMap<>();
         try {

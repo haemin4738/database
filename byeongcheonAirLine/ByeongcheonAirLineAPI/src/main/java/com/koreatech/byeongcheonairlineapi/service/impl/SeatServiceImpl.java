@@ -35,7 +35,9 @@ public class SeatServiceImpl implements SeatService {
     public List<Seat> findByFlight(int flightId) {
         List<Seat> reservedSeats = seatMapper.getReservedSeatsByFlightId(flightId);
         for (Seat reservedSeat : reservedSeats) {
-            reservedSeat.setId(reservedSeat.getId() % 201);
+            reservedSeat.setId(reservedSeat.getId() % 200);
+            if (reservedSeat.getId() == 0) reservedSeat.setId(200);
+
         }
         return reservedSeats;
     }

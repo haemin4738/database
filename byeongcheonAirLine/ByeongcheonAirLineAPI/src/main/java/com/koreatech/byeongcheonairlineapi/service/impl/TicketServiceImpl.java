@@ -32,7 +32,11 @@ public class TicketServiceImpl implements TicketService {
     //비회원 id로 티켓 조회
     @Override
     public List<ResponseTicket> findByCustomer(int id) {
-        return ticketMapper.findByCustomer(id);
+        List<ResponseTicket> tickets = ticketMapper.findByCustomer(id);
+        for (ResponseTicket ticket : tickets) {
+            ticket.setSeatId(ticket.getSeatId() % 200);
+        }
+        return tickets;
     }
 
     //회원 계정으로 티켓 조회
@@ -43,7 +47,11 @@ public class TicketServiceImpl implements TicketService {
         if (member == null || !passwordEncoder.matches(loginDto.getPassword(), member.getPassword())) {
             throw new IllegalArgumentException("해당 ID와 PASSWORD가 일치하는 회원이 없음.");
         }
-        return ticketMapper.findByMember(loginDto.getAccount());
+        List<ResponseTicket> tickets = ticketMapper.findByMember(loginDto.getAccount());
+        for (ResponseTicket ticket : tickets) {
+            ticket.setSeatId(ticket.getSeatId() % 200);
+        }
+        return tickets;
     }
 
 

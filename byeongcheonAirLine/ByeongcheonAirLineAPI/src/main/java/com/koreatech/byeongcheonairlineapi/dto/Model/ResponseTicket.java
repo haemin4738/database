@@ -5,8 +5,8 @@ import lombok.Data;
 @Data
 public class ResponseTicket {
     private int id;
-    private String departureLocation;
-    private String arrivalLocation;
+    private String departure;
+    private String arrival;
     private String departureTime;
     private String arrivalTime;
     private String seatClass;

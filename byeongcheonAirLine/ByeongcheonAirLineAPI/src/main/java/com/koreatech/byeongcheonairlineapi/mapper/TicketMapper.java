@@ -36,7 +36,7 @@ public interface TicketMapper {
 
     //회원에게 보여줄 티켓정보 검색
     @Select("""
-            SELECT t.id, dl.name as departureLocation, al.name as arrivalLocation,
+            SELECT t.id, dl.name as departure, al.name as arrival,
                 f.departureTime, date_add(f.departureTime, interval f.duration hour) as arrivalTime,
                 s.seatClass, p.name as planeName, t.seatId, t.state
                 FROM ticket t
@@ -51,7 +51,7 @@ public interface TicketMapper {
             """)
     List<ResponseTicket> findByMember(String account);
     @Select("""
-            SELECT t.id, dl.name as departureLocation, al.name as arrivalLocation,
+            SELECT t.id, dl.name as departure, al.name as arrival,
                 f.departureTime, date_add(f.departureTime, interval f.duration hour) as arrivalTime,
                 s.seatClass, p.name as planeName, t.seatId, t.state
                 FROM ticket t

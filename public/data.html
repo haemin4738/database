@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <title>Data Page</title>
+  </head>
+  <body>
+    <h1>회원가입 데이터 확인</h1>
+    <table id="data-table">
+      <thead>
+        <tr>
+          <th>이름</th>
+          <th>아이디</th>
+          <!-- 기타 필요한 데이터 컬럼 추가 -->
+        </tr>
+      </thead>
+      <tbody></tbody>
+    </table>
+
+    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+    <script>
+      axios
+        .get("YOUR_API_URL")
+        .then((response) => {
+          const data = response.data;
+          const tableBody = document.querySelector("#data-table tbody");
+
+          data.forEach((item) => {
+            const row = document.createElement("tr");
+            const nameCell = document.createElement("td");
+            const idCell = document.createElement("td");
+
+            nameCell.textContent = item.name;
+            idCell.textContent = item.id;
+
+            row.appendChild(nameCell);
+            row.appendChild(idCell);
+
+            tableBody.appendChild(row);
+          });
+        })
+        .catch((error) => {
+          console.error(error);
+          // Handle error
+        });
+    </script>
+  </body>
+</html>

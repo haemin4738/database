@@ -1,0 +1,33 @@
+.header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px;
+    background-color: #f1f1f1;
+  }
+  
+  .logo {
+    font-size: 24px;
+    font-weight: bold;
+  }
+  
+  .button-group {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+  
+  .res-button {
+    padding: 10px 20px;
+    background-color: #ccc;
+    border: none;
+    border-radius: 5px;
+    text-decoration: none;
+    color: #000;
+    font-weight: bold;
+    margin-left: auto;
+  }
+
+  .nav_link{
+    color : black;
+  }

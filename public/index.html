@@ -12,66 +12,149 @@
     />
     <link rel="stylesheet" type="text/css" href="./css/header.css" />
     <link rel="stylesheet" type="text/css" href="./css/main.css" />
-    <link rel="stylesheet" type="text/css" href="./css/search.css" />
+    <link rel="stylesheet" type="text/css" href="./css/serach.css" />
   </head>
   <body>
+    <script
+      src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js"
+      integrity="sha384-kenU1KFdBIe4zVF0s0G1M5b4hcpxyD9F7jL+jjXkk+Q2h455rYXK/7HAuoJl+0I4"
+      crossorigin="anonymous"
+    ></script>
+
     <header class="my-header">
       <div class="container">
         <div class="top-header">
           <div class="header">
             <div class="logo"><a href="index.html">BCAirline</a></div>
-            <div class="button-group" id="user-info">
-              <!-- 사용자 정보를 여기에 동적으로 추가 -->
+            <div class="button-group">
+              <a href="login.html" class="btn btn-primary">로그인</a>
+              <a href="member_form.html" class="res-button">회원가입</a>
             </div>
           </div>
         </div>
+
         <nav class="navbar navbar-expand-lg bg-light">
           <div class="container-fluid">
-            <ul class="navbar-nav me-auto mb-2 mb-lg-0">
-              <li class="nav-item">
-                <a class="nav-link" href="customer_form.html"
-                  >승객정보 입력(비회원)</a
-                >
-              </li>
-              <li class="nav-item">
-                <a class="nav-link" href="customer_form.html"
-                  >승객정보 입력(회원)</a
-                >
-              </li>
-              <li class="nav-item">
-                <a class="nav-link" href="ticket_search.html">티켓 조회</a>
-              </li>
-            </ul>
-            <!-- 로그인/로그아웃 버튼 추가 -->
-            <div class="d-flex">
-              <div class="mr-3" id="user-info">
-                <!-- 사용자 정보를 여기에 동적으로 추가 -->
-              </div>
-              <a href="login.html" class="btn btn-primary">로그인</a>
-              <a href="signup.html" class="btn btn-primary">회원가입</a>
-              <a href="logout.html" class="btn btn-primary">로그아웃</a>
+            </button>
+              <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+                <li class="nav-item"></li>
+                    <li><a class="nav-link" href="customer_form.html">승객정보 입력(비회원)</a></li>
+                    <li><a class="nav-link" href="customer_form.html">승객정보 입력(회원)</a></li>
+                    <li><a class="nav-link" href="ticket_search.html">티켓 조회</a></li>
+                  </ul>
+                </li>
+              </form>
             </div>
           </div>
         </nav>
       </div>
     </header>
-    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.5.2/dist/js/bootstrap.bundle.min.js"></script>
-    <script>
-      // 페이지 로드 시 사용자 정보 확인
-      document.addEventListener("DOMContentLoaded", function () {
-        const userInfo = sessionStorage.getItem("loggedInAccount");
-        const userElement = document.getElementById("user-info");
-        if (userInfo) {
-          const userId = userInfo; // 예시로 세션에 저장된 사용자 정보를 아이디로 가정
-          userElement.innerHTML = `<span>${userId} 님 환영합니다.</span>`;
-        } else {
-          userElement.innerHTML = `
-    <a href="login.html" class="btn btn-primary">로그인</a>
-    <a href="signup.html" class="btn btn-primary">회원가입</a>
-  `;
-        }
-      });
-    </script>
-  </body>
+      <div class="container">
+        <h2>항공권 조회</h2>
+        <ul class="nav nav-tabs">
+          <li class="nav-item">
+            <a
+              class="nav-link active"
+              id="oneWayTab"
+              data-toggle="tab"
+              href="#oneWayForm"
+              >편도</a
+            >
+          </li>
+          <li class="nav-item">
+            <a
+              class="nav-link"
+              id="roundTripTab"
+              data-toggle="tab"
+              href="#roundTripForm"
+              >왕복</a
+            >
+          </li>
+        </ul>
+        <div class="tab-content">
+          <div class="tab-pane fade show active" id="oneWayForm">
+            <form id="searchForm" action="result.html" method="GET">
+              <div class="form-group">
+                <label for="departureDate">가는날:</label>
+                <input
+                  type="date"
+                  id="departureDate"
+                  name="departureDate"
+                  required
+                />
+              </div>
+              <div class="form-group">
+                <label for="departureCity">출발지:</label>
+                <input
+                  type="text"
+                  id="departureCity"
+                  name="departureCity"
+                  required
+                />
+              </div>
+              <div class="form-group">
+                <label for="arrivalCity">도착지:</label>
+                <input type="text" id="arrivalCity" name="arrivalCity" required />
+              </div>
+              <div class="form-group">
+                <label for="seatClass">좌석 등급:</label>
+                <select id="seatClass" name="seatClass" required>
+                  <option value="">선택하세요</option>
+                  <option value="first">퍼스트</option>
+                  <option value="business">비지니스</option>
+                  <option value="economy">이코노미</option>
+                </select>
+              </div>
+              <div class="form-group">
+                <input type="submit" value="조회" />
+              </div>
+            </form>
+          </div>
+          <div class="tab-pane fade" id="roundTripForm">
+            <form id="searchForm" action="result.html" method="GET">
+              <div class="form-group">
+                <label for="departureDate">가는날:</label>
+                <input
+                  type="date"
+                  id="departureDate"
+                  name="departureDate"
+                  required
+                />
+              </div>
+              <div class="form-group">
+                <label for="arrivalDate">오는날:</label>
+                <input type="date" id="arrivalDate" name="arrivalDate" required />
+              </div>
+              <div class="form-group">
+                <label for="departureCity">출발지:</label>
+                <input
+                  type="text"
+                  id="departureCity"
+                  name="departureCity"
+                  required
+                />
+              </div>
+              <div class="form-group">
+                <label for="arrivalCity">도착지:</label>
+                <input type="text" id="arrivalCity" name="arrivalCity" required />
+              </div>
+              <div class="form-group">
+                <label for="seatClass">좌석 등급:</label>
+                <select id="seatClass" name="seatClass" required>
+                  <option value="">선택하세요</option>
+                  <option value="first">퍼스트</option>
+                  <option value="business">비지니스</option>
+                  <option value="economy">이코노미</option>
+                </select>
+              </div>
+              <div class="form-group">
+                <input type="submit" value="조회" />
+              </div>
+            </form>
+          </div>
+        </div>
+      </div>
+      <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+      <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.5.2/dist/js/bootstrap.bundle.min.js"></script>
+    </body>
 </html>

@@ -29,4 +29,11 @@ public interface CustomerMapper {
             WHERE id = #{id}
             """)
     Customer findById(int id);
+
+    @Select("""
+            SELECT *
+            FROM customer
+            WHERE email = #{email}
+            """)
+    Customer findByEmail(String email);
 }

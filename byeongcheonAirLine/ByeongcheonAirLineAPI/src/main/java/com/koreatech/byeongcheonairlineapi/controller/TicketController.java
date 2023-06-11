@@ -1,9 +1,12 @@
 package com.koreatech.byeongcheonairlineapi.controller;
 
 import com.koreatech.byeongcheonairlineapi.dto.LoginDto;
+import com.koreatech.byeongcheonairlineapi.dto.Model.RequestCreateTicket;
 import com.koreatech.byeongcheonairlineapi.dto.domain.Ticket;
 import com.koreatech.byeongcheonairlineapi.service.MemberService;
 import com.koreatech.byeongcheonairlineapi.service.TicketService;
+import jakarta.servlet.http.HttpServletRequest;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -13,6 +16,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 @CrossOrigin("*")
+@Slf4j
 @RestController
 public class TicketController {
     private final TicketService ticketService;
@@ -62,7 +66,7 @@ public class TicketController {
      * @param id
      * @return
      */
-    @GetMapping("tickets/customer/{id}")
+    @GetMapping("tickets/{id}")
     public ResponseEntity<Map<String, Object>> ticket(@PathVariable int id) {
         Map<String, Object> resultMap = new HashMap<>();
         try {
@@ -107,6 +111,34 @@ public class TicketController {
         Map<String, Object> resultMap = new HashMap<>();
         try {
             ticketService.deleteById(id);
+            resultMap.put("message", "SUCCESS!");
+            return new ResponseEntity<>(resultMap, HttpStatus.OK);
+        } catch (Exception e) {
+            resultMap.put("message", "ERROR!");
+            return new ResponseEntity<>(resultMap, HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
+
+    @PostMapping("ticket/customer")
+    public ResponseEntity<Map<String, Object>> createCustomerTicket(@RequestBody RequestCreateTicket requestCreateTicket) {
+        Map<String, Object> resultMap = new HashMap<>();
+        try {
+            ticketService.createCustomerTicket(requestCreateTicket);
+            resultMap.put("message", "SUCCESS!");
+            return new ResponseEntity<>(resultMap, HttpStatus.OK);
+        } catch (Exception e) {
+            resultMap.put("message", "ERROR!");
+            log.error("{}", e);
+            return new ResponseEntity<>(resultMap, HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
+
+    @PostMapping("ticket/member")
+    public ResponseEntity<Map<String, Object>> createMemberTicket(@RequestBody RequestCreateTicket requestCreateTicket, HttpServletRequest request) {
+        Map<String, Object> resultMap = new HashMap<>();
+        try {
+            String accessToken = request.getHeader("access-token");
+            ticketService.createMemberTicket(requestCreateTicket, accessToken);
             resultMap.put("message", "SUCCESS!");
             return new ResponseEntity<>(resultMap, HttpStatus.OK);
         } catch (Exception e) {

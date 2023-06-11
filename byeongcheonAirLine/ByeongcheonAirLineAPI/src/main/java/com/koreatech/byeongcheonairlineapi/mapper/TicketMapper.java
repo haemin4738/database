@@ -60,7 +60,7 @@ public interface TicketMapper {
                 JOIN location dl ON f.departureId = dl.id
                 JOIN plane p ON f.planeId = p.id
                 JOIN seat s ON s.planeId = p.id and t.seatId = s.id
-                WHERE t.customerId = #{id}
+                WHERE t.id = #{id}
                 ORDER BY field(t.state, "reserved", "canceled", "used")
             """)
     List<ResponseTicket> findByCustomer(int id);

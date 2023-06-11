@@ -9,7 +9,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -32,6 +31,7 @@ public class FlightController {
     public ResponseEntity<Map<String, Object>> findDepartures(@RequestBody RequestFlight requestFlight) {
         Map<String, Object> resultMap = new HashMap<>();
         HttpStatus httpStatus;
+        log.info("request : {}" , requestFlight);
         try {
             List<ResponseFlight> responseFlights = flightService.goTrip(requestFlight);
             if (responseFlights == null || responseFlights.size() == 0) {

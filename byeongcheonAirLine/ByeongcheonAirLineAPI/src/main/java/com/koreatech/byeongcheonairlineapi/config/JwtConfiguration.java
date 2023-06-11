@@ -23,6 +23,7 @@ public class JwtConfiguration implements WebMvcConfigurer {
                 .excludePathPatterns("/member/login") // 적용 URL 중 제외할 URL 명시
                 .excludePathPatterns("/member/logout/*")
                 .addPathPatterns("/tickets/member") // 회원 티켓 조회도 추가.
-                .addPathPatterns("/ticket/member");s
+                .addPathPatterns("/ticket/member")
+                .addPathPatterns("/board/*");
     }
 }

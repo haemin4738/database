@@ -15,11 +15,18 @@ public interface TicketMapper {
     List<Ticket> findAll();
 
     @Insert("""
-            INSERT INTO ticket (state, payment, cardNo, memberId, flightId, customerId, boardId, seatId)
-            VALUES ('reserved', #{payment}, #{cardNo}, #{memberId}, #{flightId}, #{customerId}, #{boardId}, #{seatId})
+            INSERT INTO ticket (state, reserveDate, payment, cardNo, flightId, customerId, seatId)
+            VALUES ('reserved', now(), #{payment}, #{cardNo}, #{flightId}, #{customerId}, #{seatId})
             """)
     @Options(useGeneratedKeys = true, keyProperty = "id")
-    void insert(Ticket ticket);
+    void createByCustomer(Ticket ticket);
+
+    @Insert("""
+            INSERT INTO ticket (state, reserveDate, payment, cardNo, flightId, memberId, seatId)
+            VALUES ('reserved', now(), #{payment}, #{cardNo}, #{flightId}, #{memberId}, #{seatId})
+            """)
+    @Options(useGeneratedKeys = true, keyProperty = "id")
+    void createByMember(Ticket ticket);
 
     @Update("""
             UPDATE ticket
@@ -60,7 +67,7 @@ public interface TicketMapper {
                 JOIN location dl ON f.departureId = dl.id
                 JOIN plane p ON f.planeId = p.id
                 JOIN seat s ON s.planeId = p.id and t.seatId = s.id
-                WHERE t.customerId = #{id}
+                WHERE t.id = #{id}
                 ORDER BY field(t.state, "reserved", "canceled", "used")
             """)
     List<ResponseTicket> findByCustomer(int id);

@@ -35,23 +35,6 @@ public class CustomerController {
         }
     }
 
-    /**
-     * 고객 id 조회
-     * @param id
-     * @return
-     */
-    @GetMapping("customer/{id}")
-    public ResponseEntity<Map<String, Object>> findById(@PathVariable int id) {
-        Map<String, Object> resultMap = new HashMap<>();
-        try {
-            resultMap.put("customer", customerService.findById(id));
-            resultMap.put("message", "SUCCESS!");
-            return new ResponseEntity<>(resultMap, HttpStatus.OK);
-        } catch (Exception e) {
-            resultMap.put("message", "ERROR!");
-            return new ResponseEntity<>(resultMap, HttpStatus.INTERNAL_SERVER_ERROR);
-        }
-    }
 
     /**
      * customer 생성

@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <link rel="stylesheet" href="./css/seat.css" />
+  </head>
+  <body>
+    <h1 id="title">좌석 예약</h1>
+
+    <div class="container">
+      <script>
+        // 선택한 사각형의 번호를 저장하는 변수
+        let selectedNumber = null;
+
+        // 사각형 클릭 이벤트 핸들러
+        function handleSquareClick(number) {
+          // 선택한 사각형의 번호를 업데이트
+          selectedNumber = number;
+
+          // 모든 사각형에서 선택된 스타일 제거
+          const squares = document.querySelectorAll(".container div");
+          squares.forEach((square) => square.classList.remove("selected"));
+
+          // 선택한 사각형에 선택된 스타일 추가
+          const selectedSquare = document.querySelector(
+            `.container div[data-number="${number}"]`
+          );
+          selectedSquare.classList.add("selected");
+
+          // 좌석 등급 및 가격 정보 출력
+          const seatInfoElement = document.getElementById("seat-info");
+          if (number >= 1 && number <= 10) {
+            seatInfoElement.innerHTML = `
+              <div>좌석 등급:</div>
+              <div id="class">퍼스트</div>
+              <div>좌석 가격:</div>
+              <div id="price">300,000</div>
+            `;
+          } else if (number >= 11 && number <= 50) {
+            seatInfoElement.innerHTML = `
+              <div>좌석 등급:</div>
+              <div id="class">비즈니스</div>
+              <div>좌석 가격:</div>
+              <div id="price">200,000</div>
+            `;
+          } else {
+            seatInfoElement.innerHTML = `
+              <div>좌석 등급:</div>
+              <div id="class">이코노미</div>
+              <div>좌석 가격:</div>
+              <div id="price">100,000</div>
+            `;
+          }
+        }
+
+        // 예약 버튼 클릭 이벤트 핸들러
+        function handleReserveButtonClick() {
+          if (selectedNumber) {
+            const seatInfoElement = document.getElementById("seat-info");
+            const seatInfo = seatInfoElement.innerHTML;
+
+            const seatInfoElement2 = document.getElementById("class");
+            const seatClass = seatInfoElement2.innerHTML;
+            const seatInfoElement3 = document.getElementById("price");
+            const seatPrice = seatInfoElement3.innerHTML;
+
+            console.log("좌석 번호:", selectedNumber);
+            console.log("좌석 등급:", seatClass);
+            console.log("좌석 가격:", seatPrice);
+          } else {
+            console.log("좌석을 선택해주세요.");
+          }
+        }
+
+        for (let i = 1; i <= 200; i++) {
+          const div = document.createElement("div");
+          div.textContent = i;
+          div.setAttribute("data-number", i);
+          div.addEventListener("click", () => handleSquareClick(i));
+
+          if (i >= 1 && i <= 10) {
+            div.classList.add("group1");
+          } else if (i >= 11 && i <= 50) {
+            div.classList.add("group2");
+          } else {
+            div.classList.add("group3");
+          }
+
+          document.querySelector(".container").appendChild(div);
+        }
+      </script>
+    </div>
+
+    <div id="seat-info">
+      <div>좌석 등급:</div>
+      <div>좌석 가격:</div>
+    </div>
+
+    <div id="reserve-button">
+      <button onclick="handleReserveButtonClick()">예약</button>
+    </div>
+  </body>
+</html>

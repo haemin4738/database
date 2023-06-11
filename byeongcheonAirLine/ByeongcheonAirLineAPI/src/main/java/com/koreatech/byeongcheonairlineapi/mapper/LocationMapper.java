@@ -3,6 +3,7 @@ package com.koreatech.byeongcheonairlineapi.mapper;
 import com.koreatech.byeongcheonairlineapi.dto.LocationTmpDto;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Select;
+import org.apache.ibatis.annotations.Update;
 
 import java.util.List;
 
@@ -24,4 +25,9 @@ public interface LocationMapper {
             """)
     List<LocationTmpDto> getOver7Hours();
 
+    @Update("""
+            UPDATE location
+            SET risklevel = floor(rand()*10)
+            """)
+    void setLiskLevel();
 }

@@ -17,6 +17,6 @@ public class RequestCreateTicket {
     private int flightId;
     private int payment;
     private String cardNo;
-    private int seatId;
+    private int seatNo;
 
 }

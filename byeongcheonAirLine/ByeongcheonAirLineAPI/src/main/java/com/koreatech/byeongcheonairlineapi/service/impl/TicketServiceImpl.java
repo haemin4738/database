@@ -5,9 +5,11 @@ import com.koreatech.byeongcheonairlineapi.dto.Model.RequestCreateTicket;
 import com.koreatech.byeongcheonairlineapi.dto.Model.ResponseTicket;
 import com.koreatech.byeongcheonairlineapi.dto.domain.Customer;
 import com.koreatech.byeongcheonairlineapi.dto.domain.Member;
+import com.koreatech.byeongcheonairlineapi.dto.domain.Plane;
 import com.koreatech.byeongcheonairlineapi.dto.domain.Ticket;
 import com.koreatech.byeongcheonairlineapi.mapper.CustomerMapper;
 import com.koreatech.byeongcheonairlineapi.mapper.MemberMapper;
+import com.koreatech.byeongcheonairlineapi.mapper.PlaneMapper;
 import com.koreatech.byeongcheonairlineapi.mapper.TicketMapper;
 import com.koreatech.byeongcheonairlineapi.service.JwtService;
 import com.koreatech.byeongcheonairlineapi.service.TicketService;
@@ -27,12 +29,15 @@ public class TicketServiceImpl implements TicketService {
     private final MemberMapper memberMapper;
     private final CustomerMapper customerMapper;
 
+    private final PlaneMapper planeMapper;
+
     private final JwtService jwtService;
     @Autowired
-    public TicketServiceImpl(TicketMapper ticketMapper, MemberMapper memberMapper, CustomerMapper customerMapper, JwtService jwtService) {
+    public TicketServiceImpl(TicketMapper ticketMapper, MemberMapper memberMapper, CustomerMapper customerMapper, PlaneMapper planeMapper, JwtService jwtService) {
         this.ticketMapper = ticketMapper;
         this.memberMapper = memberMapper;
         this.customerMapper = customerMapper;
+        this.planeMapper = planeMapper;
         this.jwtService = jwtService;
     }
 
@@ -100,10 +105,14 @@ public class TicketServiceImpl implements TicketService {
         ticket.setCardNo(requestCreateTicket.getCardNo());
         ticket.setFlightId(requestCreateTicket.getFlightId());
         ticket.setCustomerId(customer.getId());
-        ticket.setSeatId(requestCreateTicket.getSeatId());
+
+        Plane plane = planeMapper.findByFlightId(requestCreateTicket.getFlightId());
+        ticket.setSeatId((plane.getId() - 1) * 200 + requestCreateTicket.getSeatNo());
         //티켓 생성
         ticketMapper.createByCustomer(ticket);
     }
+
+    @Transactional
     @Override
     public void createMemberTicket(RequestCreateTicket requestCreateTicket, String token) {
         Ticket ticket = new Ticket();
@@ -116,7 +125,10 @@ public class TicketServiceImpl implements TicketService {
         ticket.setPayment(requestCreateTicket.getPayment());
         ticket.setCardNo(requestCreateTicket.getCardNo());
         ticket.setFlightId(requestCreateTicket.getFlightId());
-        ticket.setSeatId(requestCreateTicket.getSeatId());
+
+
+        Plane plane = planeMapper.findByFlightId(requestCreateTicket.getFlightId());
+        ticket.setSeatId((plane.getId() - 1) * 200 + requestCreateTicket.getSeatNo());
 
         //티켓 생성
         ticketMapper.createByMember(ticket);

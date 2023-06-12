@@ -18,4 +18,6 @@ public class PlaneServiceImpl implements PlaneService {
     public Plane findByFlightId(int flightId) {
         return planeMapper.findByFlightId(flightId);
     }
+
+
 }

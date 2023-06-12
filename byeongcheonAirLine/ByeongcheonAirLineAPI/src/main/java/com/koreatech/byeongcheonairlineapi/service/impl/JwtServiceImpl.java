@@ -16,7 +16,7 @@ import java.util.Map;
 @Slf4j
 public class JwtServiceImpl implements JwtService {
 
-    private static final int MINUTES = 1;
+    private static final int MINUTES = 10;
     private static final int WEEKS = 2;
     private static final String SALT = "fenndqwkdwqfnnqd99823jjkfdwadafef2323224241321dbkwdwrgwefewf";
 

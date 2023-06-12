@@ -1,6 +1,6 @@
 package com.koreatech.byeongcheonairlineapi.interceptor;
 
-import com.koreatech.byeongcheonairlineapi.exception.UnAuthorizeException;
+
 import com.koreatech.byeongcheonairlineapi.service.CancelService;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;

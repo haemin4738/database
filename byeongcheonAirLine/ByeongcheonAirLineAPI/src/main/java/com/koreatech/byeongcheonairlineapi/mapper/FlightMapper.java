@@ -25,4 +25,17 @@ public interface FlightMapper {
     Flight findById(int id);
 
 
+    @Update("""
+            UPDATE flight
+            SET risklevel = floor(rand()*10) 
+            WHERE departureTime <= date_add(date_add(now(), interval #{hours} hour), interval #{minutes} minute)
+            """)
+    void setLiskLevel(int hours, int minutes);
+
+    @Update("""
+            UPDATE flight
+            SET risklevel = 0
+            """)
+    void resetLiskLevel();
+
 }

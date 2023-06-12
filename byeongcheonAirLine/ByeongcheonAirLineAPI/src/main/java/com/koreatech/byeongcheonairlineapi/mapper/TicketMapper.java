@@ -71,4 +71,15 @@ public interface TicketMapper {
                 ORDER BY field(t.state, "reserved", "canceled", "used")
             """)
     List<ResponseTicket> findByCustomer(int id);
+
+    @Update("""
+            UPDATE ticket
+            SET state = "reserved"
+            WHERE state != "used";
+            """)
+    void initState();
+
+
+
+
 }

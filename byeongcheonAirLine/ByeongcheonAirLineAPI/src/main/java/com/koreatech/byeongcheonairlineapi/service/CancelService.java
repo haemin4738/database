@@ -4,4 +4,6 @@ public interface CancelService {
 
     void setRiskLevel();
     void changeTicketState();
+
+    void initState();
 }

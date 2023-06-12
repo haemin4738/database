@@ -3,10 +3,7 @@ package com.koreatech.byeongcheonairlineapi.mapper;
 import com.koreatech.byeongcheonairlineapi.dto.FlightDto;
 import com.koreatech.byeongcheonairlineapi.dto.Model.RequestFlight;
 import com.koreatech.byeongcheonairlineapi.dto.domain.Flight;
-import org.apache.ibatis.annotations.Insert;
-import org.apache.ibatis.annotations.Mapper;
-import org.apache.ibatis.annotations.Options;
-import org.apache.ibatis.annotations.Select;
+import org.apache.ibatis.annotations.*;
 
 import java.util.List;
 
@@ -26,4 +23,6 @@ public interface FlightMapper {
 
     @Select("SELECT * FROM flight WHERE id = #{id}")
     Flight findById(int id);
+
+
 }

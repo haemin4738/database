@@ -1,9 +1,11 @@
 package com.koreatech.byeongcheonairlineapi.mapper;
 
+import com.koreatech.byeongcheonairlineapi.dto.CanceledTicketDto;
 import com.koreatech.byeongcheonairlineapi.dto.Model.ResponseTicket;
 import com.koreatech.byeongcheonairlineapi.dto.domain.Ticket;
 import org.apache.ibatis.annotations.*;
 
+import java.sql.Timestamp;
 import java.util.List;
 
 @Mapper
@@ -77,9 +79,35 @@ public interface TicketMapper {
             SET state = "reserved"
             WHERE state != "used";
             """)
-    void initState();
+    void editStateCanceledToReserved();
 
+    @Update("""
+            UPDATE ticket
+            SET state = "used"
+            WHERE state = "reserved"
+                AND flightId IN
+                (SELECT f.id FROM flight f WHERE f.departureTime <= NOW())
+            """)
+    void editStateReservedToUsed();
 
+    @Update("""
+            UPDATE ticket t
+            SET state = "canceled"
+            WHERE t.id IN
+            	(SELECT t.id
+            	 FROM flight f, location d, location a
+            	 WHERE t.flightId = f.id AND f.departureId = d.id AND f.arrivalId = a.id
+            	 AND t.state = "reserved" AND f.departureTime <= #{timestamp}
+            	 AND (a.riskLevel >= 9 OR d.riskLevel >= 9 OR f.riskLevel >= 9)
+            	 );
+            """)
+    void editStateReservedToCanceled(Timestamp timestamp);
 
+    @Select("""
+            SELECT *
+            FROM ticketsInfo
+            WHERE ticketState = "canceled" AND departureTime >= NOW();
+            """)
+    List<CanceledTicketDto> getCanceledTickets();
 
 }

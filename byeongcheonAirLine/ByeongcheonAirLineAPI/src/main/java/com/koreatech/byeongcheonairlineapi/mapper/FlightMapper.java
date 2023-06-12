@@ -27,15 +27,17 @@ public interface FlightMapper {
 
     @Update("""
             UPDATE flight
-            SET risklevel = floor(rand()*10) 
-            WHERE departureTime <= date_add(date_add(now(), interval #{hours} hour), interval #{minutes} minute)
+            SET risklevel = floor(rand()*10)
+            WHERE departureTime <= date_add(now(), interval #{hours} hour)
             """)
-    void setLiskLevel(int hours, int minutes);
+    void setRiskLevel(int hours);
 
     @Update("""
             UPDATE flight
             SET risklevel = 0
+            WHERE departureTime >= NOW()
+            
             """)
-    void resetLiskLevel();
+    void resetRiskLevel();
 
 }

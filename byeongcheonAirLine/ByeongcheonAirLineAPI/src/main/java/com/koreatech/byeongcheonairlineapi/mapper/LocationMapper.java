@@ -29,5 +29,11 @@ public interface LocationMapper {
             UPDATE location
             SET risklevel = floor(rand()*10)
             """)
-    void setLiskLevel();
+    void setRiskLevel();
+
+    @Update("""
+            UPDATE location
+            SET risklevel = 0
+            """)
+    void resetRiskLevel();
 }

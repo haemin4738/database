@@ -1,8 +1,10 @@
 package com.koreatech.byeongcheonairlineapi.controller;
 
+import com.koreatech.byeongcheonairlineapi.dto.CanceledTicketDto;
 import com.koreatech.byeongcheonairlineapi.dto.LoginDto;
 import com.koreatech.byeongcheonairlineapi.dto.Model.RequestCreateTicket;
 import com.koreatech.byeongcheonairlineapi.dto.domain.Ticket;
+import com.koreatech.byeongcheonairlineapi.service.CancelService;
 import com.koreatech.byeongcheonairlineapi.service.MemberService;
 import com.koreatech.byeongcheonairlineapi.service.TicketService;
 import jakarta.servlet.http.HttpServletRequest;
@@ -13,6 +15,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 @CrossOrigin("*")
@@ -21,10 +24,14 @@ import java.util.Map;
 public class TicketController {
     private final TicketService ticketService;
     private final MemberService memberService;
+
+    private final CancelService cancelService;
+
     @Autowired
-    public TicketController(TicketService ticketService, MemberService memberService) {
+    public TicketController(TicketService ticketService, MemberService memberService, CancelService cancelService) {
         this.ticketService = ticketService;
         this.memberService = memberService;
+        this.cancelService = cancelService;
     }
 
     /**
@@ -45,6 +52,7 @@ public class TicketController {
 
     /**
      * 회원 정보로 티켓 조회
+     *
      * @param loginDto
      * @return
      */
@@ -55,7 +63,7 @@ public class TicketController {
             resultMap.put("tickets", ticketService.findByMember(loginDto));
             resultMap.put("message", "SUCCESS!");
             return new ResponseEntity<>(resultMap, HttpStatus.OK);
-        } catch (Exception e){
+        } catch (Exception e) {
             resultMap.put("message", "ERROR!");
             return new ResponseEntity<>(resultMap, HttpStatus.INTERNAL_SERVER_ERROR);
         }
@@ -63,6 +71,7 @@ public class TicketController {
 
     /**
      * 비회원 id로 티켓 조회
+     *
      * @param id
      * @return
      */
@@ -81,6 +90,7 @@ public class TicketController {
 
     /**
      * 티켓 상태 업데이트
+     *
      * @param id
      * @param state
      * @return
@@ -103,6 +113,7 @@ public class TicketController {
 
     /**
      * 티켓 id로 해당 티켓 삭제
+     *
      * @param id
      * @return
      */
@@ -146,4 +157,39 @@ public class TicketController {
             return new ResponseEntity<>(resultMap, HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
+
+    @PutMapping("tickets/canceled")
+    public ResponseEntity<Map<String, Object>> cancelTicket() {
+        Map<String, Object> resultMap = new HashMap<>();
+        HttpStatus httpStatus;
+        try {
+            cancelService.cancelTicket();
+            resultMap.put("canceledTickets", cancelService.getCanceledTickets());
+            resultMap.put("message", "SUCCESS!");
+            httpStatus = HttpStatus.OK;
+
+        } catch (Exception e) {
+            log.error("ERROR", e);
+            resultMap.put("message", "SERVER ERROR!");
+            httpStatus = HttpStatus.INTERNAL_SERVER_ERROR;
+        }
+
+        return new ResponseEntity<>(resultMap, httpStatus);
+    }
+
+    @PutMapping("tickets/reset")
+    public ResponseEntity<Map<String, Object>> reset() {
+        Map<String, Object> resultMap = new HashMap<>();
+        try {
+            cancelService.resetAll();
+            resultMap.put("message", "SUCCESS!");
+            return new ResponseEntity<>(resultMap, HttpStatus.OK);
+
+        }catch (Exception e) {
+            resultMap.put("message", "SERVER ERROR!");
+            return new ResponseEntity<>(resultMap, HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
+
+
 }

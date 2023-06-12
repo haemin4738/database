@@ -1,7 +1,7 @@
 package com.koreatech.byeongcheonairlineapi.interceptor;
 
 
-import com.koreatech.byeongcheonairlineapi.service.CancelService;
+import com.koreatech.byeongcheonairlineapi.mapper.TicketMapper;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.extern.slf4j.Slf4j;
@@ -13,16 +13,24 @@ import java.io.IOException;
 
 @Component
 @Slf4j
-public class CanceledInterceptor implements HandlerInterceptor {
-    private final CancelService cancelService;
+public class SynchronousInterceptor implements HandlerInterceptor {
 
+    private final TicketMapper ticketMapper;
     @Autowired
-    public CanceledInterceptor(CancelService cancelService) {
-        this.cancelService = cancelService;
+    public SynchronousInterceptor(TicketMapper ticketMapper) {
+        this.ticketMapper = ticketMapper;
     }
+
 
     @Override
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws IOException {
+        try {
+            ticketMapper.editStateReservedToUsed();
+            log.debug("I USED!!!!!!!!");
+        }catch (Exception e) {
+            response.setStatus(500);
+            return false;
+        }
         return true;
     }
 }

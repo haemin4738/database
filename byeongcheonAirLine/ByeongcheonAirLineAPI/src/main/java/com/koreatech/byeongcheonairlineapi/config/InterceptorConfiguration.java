@@ -1,19 +1,22 @@
 package com.koreatech.byeongcheonairlineapi.config;
 
 import com.koreatech.byeongcheonairlineapi.interceptor.ConfirmInterceptor;
+import com.koreatech.byeongcheonairlineapi.interceptor.SynchronousInterceptor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
 @Configuration
-public class JwtConfiguration implements WebMvcConfigurer {
+public class InterceptorConfiguration implements WebMvcConfigurer {
 
     private final ConfirmInterceptor confirmInterceptor;
+    private final SynchronousInterceptor synchronousInterceptor;
 
     @Autowired
-    public JwtConfiguration(ConfirmInterceptor confirmInterceptor) {
+    public InterceptorConfiguration(ConfirmInterceptor confirmInterceptor, SynchronousInterceptor synchronousInterceptor) {
         this.confirmInterceptor = confirmInterceptor;
+        this.synchronousInterceptor = synchronousInterceptor;
     }
 
     @Override
@@ -25,5 +28,9 @@ public class JwtConfiguration implements WebMvcConfigurer {
                 .addPathPatterns("/tickets/member") // 회원 티켓 조회도 추가.
                 .addPathPatterns("/ticket/member")
                 .addPathPatterns("/board/*");
+        registry.addInterceptor(synchronousInterceptor)
+                .addPathPatterns("/seats/*")
+                .addPathPatterns("/tickets/*")
+                .addPathPatterns("/flight/*");
     }
 }

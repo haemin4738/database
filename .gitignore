@@ -9,7 +9,7 @@
 .idea/
 out/
 *.properties
-ByeongcheonAirLineAPI/src/main/java/com/koreatech/byeongcheonairlineapi/service/impl/JwtServiceImpl.java
+/**/JwtServiceImpl.java
 
 # mpeltonen/sbt-idea plugin
 .idea_modules/

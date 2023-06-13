@@ -9,7 +9,7 @@
 .idea/
 out/
 *.properties
-*.JwtServiceImpl.java
+Impl/JwtServiceImpl.java
 
 # mpeltonen/sbt-idea plugin
 .idea_modules/

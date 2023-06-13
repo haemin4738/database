@@ -21,7 +21,7 @@ public class CancelServiceImpl implements CancelService {
     private final LocationMapper locationMapper;
     private final FlightMapper flightMapper;
 
-    private final int PLUSHOUR = 20000;
+    private final int PLUSHOUR = 2; // 결항 시간 기준을 결정. 현재시각 + PLUSHOUR 이내의 출발시각을 가진 티켓을 결항시킴.
 
     @Autowired
     public CancelServiceImpl(TicketMapper ticketMapper, LocationMapper locationMapper, FlightMapper flightMapper) {

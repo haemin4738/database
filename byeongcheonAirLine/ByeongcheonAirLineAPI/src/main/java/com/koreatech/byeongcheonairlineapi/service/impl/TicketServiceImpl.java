@@ -28,9 +28,7 @@ public class TicketServiceImpl implements TicketService {
     private final TicketMapper ticketMapper;
     private final MemberMapper memberMapper;
     private final CustomerMapper customerMapper;
-
     private final PlaneMapper planeMapper;
-
     private final JwtService jwtService;
     @Autowired
     public TicketServiceImpl(TicketMapper ticketMapper, MemberMapper memberMapper, CustomerMapper customerMapper, PlaneMapper planeMapper, JwtService jwtService) {

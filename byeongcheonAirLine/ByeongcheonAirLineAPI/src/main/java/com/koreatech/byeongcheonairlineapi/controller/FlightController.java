@@ -28,7 +28,7 @@ public class FlightController {
 
 
     @GetMapping("departure")
-    public ResponseEntity<Map<String, Object>> findDepartures(@RequestBody RequestFlight requestFlight) {
+    public ResponseEntity<Map<String, Object>> findDepartures(RequestFlight requestFlight) {
         Map<String, Object> resultMap = new HashMap<>();
         HttpStatus httpStatus;
         log.info("request : {}" , requestFlight);
@@ -51,7 +51,7 @@ public class FlightController {
         return new ResponseEntity<>(resultMap, httpStatus);
     }
     @GetMapping("arrival")
-    public ResponseEntity<Map<String, Object>> findArrivals(@RequestBody RequestFlight requestFlight) {
+    public ResponseEntity<Map<String, Object>> findArrivals(RequestFlight requestFlight) {
         Map<String, Object> resultMap = new HashMap<>();
         HttpStatus httpStatus;
         try {

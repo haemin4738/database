@@ -1,6 +1,7 @@
 package com.koreatech.byeongcheonairlineapi.dto.Model;
 
 import lombok.Data;
+import org.springframework.format.annotation.DateTimeFormat;
 
 import java.util.Date;
 
@@ -18,7 +19,9 @@ public class RequestFlight {
     private String seatClass;
 
     // 가는날.
+    @DateTimeFormat(pattern = "yyyy-MM-dd")
     private Date departureDate;
     // 오는날.
+    @DateTimeFormat(pattern = "yyyy-MM-dd")
     private Date arrivalDate;
 }

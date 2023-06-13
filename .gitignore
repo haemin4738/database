@@ -8,8 +8,8 @@
 # User-specific stuff
 .idea/
 out/
-
 *.properties
+*.JwtServiceImpl.java
 
 # mpeltonen/sbt-idea plugin
 .idea_modules/

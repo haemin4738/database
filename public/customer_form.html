@@ -27,25 +27,30 @@
         <div class="top-header">
           <div class="header">
             <div class="logo"><a href="index.html">BCAirline</a></div>
-            <div class="button-group">
+            <div class="button-group" id="login-buttons">
+              <!-- 로그인 버튼 -->
               <a href="login.html" class="btn btn-primary">로그인</a>
               <a href="member_form.html" class="res-button">회원가입</a>
             </div>
+            <div class="button-group" id="account-info" style="display: none;">
+              <!-- 로그인 상태 표시 -->
+              <span id="loggedInAccount"></span>
+              <a href="logout.html" id="logoutButton" class="btn btn-secondary">로그아웃</a>
+            </div>
           </div>
         </div>
-
         <nav class="navbar navbar-expand-lg bg-light">
           <div class="container-fluid">
             </button>
-              <ul class="navbar-nav me-auto mb-2 mb-lg-0">
-                <li class="nav-item"></li>
-                    <li><a class="nav-link" href="customer_form.html">승객정보 입력(비회원)</a></li>
-                    <li><a class="nav-link" href="customer_form.html">승객정보 입력(회원)</a></li>
-                    <li><a class="nav-link" href="ticket_search.html">티켓 조회</a></li>
-                  </ul>
-                </li>
-              </form>
-            </div>
+            <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+              <li class="nav-item"></li>
+              <li><a class="nav-link" href="customer_form.html">승객정보 입력(비회원)</a></li>
+              <li><a class="nav-link" href="customer_form.html">승객정보 입력(회원)</a></li>
+              <li><a class="nav-link" href="ticket_search.html">티켓 조회</a></li>
+            </ul>
+            </li>
+          </form>
+          </div>
           </div>
         </nav>
       </div>
@@ -174,37 +179,24 @@
     <script>
       function handleSubmit(event) {
         event.preventDefault();
-        let sessionStorage = window.sessionStorage;
-        let koLastName = document.getElementById("validationDefault01").value;
-        let koFirstName = document.getElementById("validationDefault02").value;
         let enLastName = document.getElementById("validationDefault03").value;
         let enFirstName = document.getElementById("validationDefault04").value;
-        let account = document.getElementById("validationDefault05").value;
-        let password = document.getElementById("validationDefault06").value;
-        let password2 = document.getElementById("validationDefault07").value;
         let birthday = document.getElementById("validationDefault08").value;
         let sex = document.querySelector('input[name="gender"]:checked').value;
         let email = document.getElementById("validationDefault10").value;
         let phone = document.getElementById("validationDefault12").value;
-        let nation = document.getElementById("validationDefault13").value;
 
         let member = {
-          koLastName: koLastName,
-          koFirstName: koFirstName,
           enLastName: enLastName,
           enFirstName: enFirstName,
-          account: account,
-          password: password,
-          password2: password2,
           email: email,
           birthday: birthday,
           sex: sex,
           phone: phone,
-          nation: nation,
         };
 
         // 여기에 Axios POST request를 추가합니다.
-        const serverURL = "http://172.19.84.226:8080/signUp";
+        const serverURL = "http://172.19.83.53:8080/signUp";
         // Axios POST request
         axios
           .post(serverURL, member)
@@ -221,6 +213,41 @@
       // 회원가입 폼 제출 이벤트 리스너 등록
       let form = document.getElementById("signup-form");
       form.addEventListener("submit", handleSubmit);
+
+      // 로그인 상태 확인 함수
+      function checkLoginStatus() {
+        var loginButtons = document.getElementById("login-buttons");
+        var accountInfo = document.getElementById("account-info");
+        var loggedInAccount = document.getElementById("loggedInAccount");
+        var logoutButton = document.getElementById("logoutButton");
+        var account = sessionStorage.getItem("loggedInAccount");
+    
+        if (account) {
+          // 로그인 상태인 경우
+          loginButtons.style.display = "none";
+          accountInfo.style.display = "block";
+          loggedInAccount.textContent = "로그인된 계정: " + account;
+        } else {
+          // 로그인 상태가 아닌 경우
+          loginButtons.style.display = "block";
+          accountInfo.style.display = "none";
+          loggedInAccount.textContent = "";
+        }
+      }
+    
+      // 로그아웃 버튼 클릭 이벤트 처리
+      function logout() {
+        sessionStorage.removeItem("loggedInAccount");
+        checkLoginStatus();
+      }
+    
+      // 페이지 로드 시 로그인 상태 확인
+      checkLoginStatus();
+    
+      // 로그아웃 버튼 클릭 이벤트 연결
+      var logoutButton = document.getElementById("logoutButton");
+      logoutButton.addEventListener("click", logout);
+
     </script>
   </body>
 </html>

@@ -38,7 +38,7 @@
           password: password,
         };
 
-        const serverURL = "http://172.19.83.53:8080/member/login";
+        const serverURL = "http://172.19.84.247:8080/member/login";
         axios
           .post(serverURL, member)
           .then((response) => {
@@ -52,15 +52,8 @@
             sessionStorage.setItem("refreshToken", refreshToken);
             sessionStorage.setItem("loggedInAccount", account); // 입력받은 아이디를 세션에 저장
 
-            const access_session = sessionStorage.getItem("accessToken");
-            const refresh_session = sessionStorage.getItem("refreshToken");
-            const account_session = sessionStorage.getItem("loggedInAccount");
-            console.log(`Access Token:`, access_session);
-            console.log(`Refresh Token:`, refresh_session);
-            console.log("account : ", account_session);
-
             // 페이지 이동
-            window.location.href = "index.html";
+            location.href = history.back;
           })
           .catch((error) => {
             console.error("Error sending member information:", error);

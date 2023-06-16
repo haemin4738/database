@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Canceled Tickets</title>
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/5.3.0/css/bootstrap.min.css"
+      integrity="sha512-...your-integrity-hash... "
+      crossorigin="anonymous"
+    />
+    <style>
+      body {
+        font-family: Arial, sans-serif;
+        background-image: url(/cyclone-2100663_640.jpg);
+        background-repeat: no-repeat;
+        background-size: cover;
+        background-position: center;
+      }
+      .container {
+        background-color: rgba(255, 255, 255, 0.8);
+        padding: 20px;
+        margin-top: 100px;
+      }
+      h1 {
+        text-align: center;
+        margin-top: 30px;
+      }
+      table {
+        width: 100%;
+        border-collapse: collapse;
+        margin-top: 30px;
+      }
+      th,
+      td {
+        padding: 8px;
+        text-align: left;
+        border-bottom: 1px solid #ddd;
+      }
+      th {
+        background-color: #f2f2f2;
+      }
+      tr:last-child td {
+        border-bottom: none;
+      }
+      .no-data {
+        text-align: center;
+        font-weight: bold;
+        color: #888;
+        padding: 16px;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="container">
+      <h1 class="text-center mt-5">Canceled Tickets</h1>
+      <table class="table mt-5">
+        <thead>
+          <tr>
+            <th>Ticket ID</th>
+            <th>Ticket State</th>
+            <th>Flight Risk</th>
+            <th>Departure Risk</th>
+            <th>Arrival Risk</th>
+            <th>Departure</th>
+            <th>Arrival</th>
+            <th>Departure Time</th>
+          </tr>
+        </thead>
+        <tbody id="ticketData">
+          <!-- Ticket data will be inserted here -->
+        </tbody>
+      </table>
+    </div>
+    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+    <script>
+      // JSON 데이터를 가져와서 화면에 출력하는 함수
+      function displayTicketData(data) {
+        var ticketData = document.getElementById("ticketData");
+
+        // 데이터가 비어있을 경우 처리
+        if (data && data.canceledTickets && data.canceledTickets.length > 0) {
+          // 취소된 티켓 정보를 반복하며 행을 추가
+          data.canceledTickets.forEach(function (ticket) {
+            var row = document.createElement("tr");
+
+            // 각 속성에 대한 열을 생성하여 데이터 삽입
+            var ticketId = document.createElement("td");
+            ticketId.textContent = ticket.ticketId;
+            row.appendChild(ticketId);
+
+            var ticketState = document.createElement("td");
+            ticketState.textContent = ticket.ticketState;
+            row.appendChild(ticketState);
+
+            var flightRisk = document.createElement("td");
+            flightRisk.textContent = ticket.flightRisk;
+            row.appendChild(flightRisk);
+
+            var departureRisk = document.createElement("td");
+            departureRisk.textContent = ticket.departureRisk;
+            row.appendChild(departureRisk);
+
+            var arrivalRisk = document.createElement("td");
+            arrivalRisk.textContent = ticket.arrivalRisk;
+            row.appendChild(arrivalRisk);
+
+            var departure = document.createElement("td");
+            departure.textContent = ticket.departure;
+            row.appendChild(departure);
+
+            var arrival = document.createElement("td");
+            arrival.textContent = ticket.arrival;
+            row.appendChild(arrival);
+
+            var departureTime = document.createElement("td");
+            departureTime.textContent = ticket.departureTime;
+            row.appendChild(departureTime);
+
+            // 생성된 행을 티켓 데이터 테이블에 추가
+            ticketData.appendChild(row);
+          });
+        } else {
+          // 데이터가 비어있을 경우 메시지 출력
+          var noDataMessage = document.createElement("tr");
+          var messageCell = document.createElement("td");
+          messageCell.textContent = "No canceled tickets found.";
+          messageCell.colSpan = 8;
+          noDataMessage.appendChild(messageCell);
+          ticketData.appendChild(noDataMessage);
+        }
+      }
+
+      // 서버에서 JSON 데이터를 가져오는 비동기 함수
+      function fetchTicketData() {
+        var url = "http://172.19.83.23:8080/tickets/canceled";
+
+        axios
+          .put(url)
+          .then(function (response) {
+            var data = response.data;
+            console.log(data);
+            displayTicketData(data);
+          })
+          .catch(function (error) {
+            console.error("Error retrieving canceled tickets:", error);
+          });
+      }
+
+      // 페이지가 로드될 때 티켓 데이터를 가져오도록 설정
+      fetchTicketData();
+    </script>
+  </body>
+</html>

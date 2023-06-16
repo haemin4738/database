@@ -81,7 +81,7 @@ public class FlightServiceImpl implements FlightService {
         requestFlight.setArrival(departure);
         // 출발일 가는날로 설정
         requestFlight.setDepartureDate(requestFlight.getArrivalDate());
-        log.debug("flightModel {}" , requestFlight);
+        log.info("flightModel {}" , requestFlight);
         // 조건에 맞게 조회후 리턴.
         return goTrip(requestFlight);
     }

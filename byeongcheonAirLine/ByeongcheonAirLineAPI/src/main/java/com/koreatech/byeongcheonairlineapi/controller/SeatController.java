@@ -18,7 +18,7 @@ import java.util.List;
 import java.util.Map;
 
 @Slf4j
-@CrossOrigin("*")
+//@CrossOrigin("*")
 @RestController
 public class SeatController {
     private final SeatService seatService;

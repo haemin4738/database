@@ -9,7 +9,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.HashMap;
 import java.util.Map;
-@CrossOrigin("*")
+//@CrossOrigin("*")
 @RestController
 public class CustomerController {
     private final CustomerService customerService;

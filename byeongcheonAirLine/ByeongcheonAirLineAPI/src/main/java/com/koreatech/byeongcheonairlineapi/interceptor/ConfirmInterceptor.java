@@ -9,6 +9,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Component;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.servlet.HandlerInterceptor;
 
 import java.io.IOException;
@@ -26,6 +27,7 @@ public class ConfirmInterceptor implements HandlerInterceptor {
     @Override
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws IOException{
         String accessToken = request.getHeader("access-token");
+
         log.debug("token: {}", accessToken);
         log.debug("userId : {}", jwtService.getInfo("account", accessToken));
         if (jwtService.checkToken(accessToken)) return true;

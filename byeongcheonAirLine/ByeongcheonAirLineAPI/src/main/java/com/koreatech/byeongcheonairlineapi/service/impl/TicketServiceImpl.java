@@ -84,7 +84,7 @@ public class TicketServiceImpl implements TicketService {
 
     @Transactional
     @Override
-    public void createCustomerTicket(RequestCreateTicket requestCreateTicket) {
+    public int createCustomerTicket(RequestCreateTicket requestCreateTicket) {
         Customer customer = new Customer();
         Ticket ticket = new Ticket();
         //System.out.println(requestCustomerTicket);
@@ -108,6 +108,7 @@ public class TicketServiceImpl implements TicketService {
         ticket.setSeatId((plane.getId() - 1) * 200 + requestCreateTicket.getSeatNo());
         //티켓 생성
         ticketMapper.createByCustomer(ticket);
+        return ticket.getId();
     }
 
     @Transactional

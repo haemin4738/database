@@ -13,7 +13,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-@CrossOrigin("*")
+//@CrossOrigin("*")
 @Slf4j
 @RestController
 @RequestMapping("flight")
@@ -36,7 +36,7 @@ public class FlightController {
             List<ResponseFlight> responseFlights = flightService.goTrip(requestFlight);
             if (responseFlights == null || responseFlights.size() == 0) {
                 httpStatus = HttpStatus.NO_CONTENT;
-                log.error("flights : {}", responseFlights);
+                log.info("flights : {}", responseFlights);
             }
             else {
                 httpStatus = HttpStatus.OK;
@@ -52,6 +52,7 @@ public class FlightController {
     }
     @GetMapping("arrival")
     public ResponseEntity<Map<String, Object>> findArrivals(RequestFlight requestFlight) {
+        log.info("request : {}" , requestFlight);
         Map<String, Object> resultMap = new HashMap<>();
         HttpStatus httpStatus;
         try {

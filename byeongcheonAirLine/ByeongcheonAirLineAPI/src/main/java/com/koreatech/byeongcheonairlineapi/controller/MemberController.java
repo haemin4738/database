@@ -17,7 +17,7 @@ import java.util.Map;
 
 @RestController
 @Slf4j
-@CrossOrigin("*")
+//@CrossOrigin("*")
 public class MemberController {
     private final MemberService memberService;
 

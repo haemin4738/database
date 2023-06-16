@@ -10,7 +10,7 @@ public interface TicketService {
     List<Ticket> findAll();
     List<ResponseTicket> findByCustomer(int id);
     List<ResponseTicket> findByMember(LoginDto loginDto);
-    public void createCustomerTicket(RequestCreateTicket requestCreateTicket);
+    public int createCustomerTicket(RequestCreateTicket requestCreateTicket);
     public void createMemberTicket(RequestCreateTicket requestCreateTicket, String token);
     void updateState(Ticket ticket);
     void deleteById(int id);

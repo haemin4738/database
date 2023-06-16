@@ -18,7 +18,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-@CrossOrigin("*")
+//@CrossOrigin("*")
 @Slf4j
 @RestController
 public class TicketController {
@@ -57,7 +57,7 @@ public class TicketController {
      * @return
      */
     @GetMapping("tickets/member")
-    public ResponseEntity<Map<String, Object>> ticket(@RequestBody LoginDto loginDto) {
+    public ResponseEntity<Map<String, Object>> ticket(LoginDto loginDto) {
         Map<String, Object> resultMap = new HashMap<>();
         try {
             resultMap.put("tickets", ticketService.findByMember(loginDto));
@@ -65,6 +65,7 @@ public class TicketController {
             return new ResponseEntity<>(resultMap, HttpStatus.OK);
         } catch (Exception e) {
             resultMap.put("message", "ERROR!");
+            log.error("회원 티켓 조회 에러!!", e);
             return new ResponseEntity<>(resultMap, HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
@@ -84,6 +85,7 @@ public class TicketController {
             return new ResponseEntity<>(resultMap, HttpStatus.OK);
         } catch (Exception e) {
             resultMap.put("message", "ERROR!");
+            log.error("비회원 티켓 조회 에러!!", e);
             return new ResponseEntity<>(resultMap, HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
@@ -139,7 +141,7 @@ public class TicketController {
             return new ResponseEntity<>(resultMap, HttpStatus.OK);
         } catch (Exception e) {
             resultMap.put("message", "ERROR!");
-            log.error("{}", e);
+            log.error("비회원 티켓 생성 에러!!", e);
             return new ResponseEntity<>(resultMap, HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
@@ -154,6 +156,7 @@ public class TicketController {
             return new ResponseEntity<>(resultMap, HttpStatus.OK);
         } catch (Exception e) {
             resultMap.put("message", "ERROR!");
+            log.error("회원 티켓 생성에러!!", e);
             return new ResponseEntity<>(resultMap, HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
@@ -169,7 +172,7 @@ public class TicketController {
             httpStatus = HttpStatus.OK;
 
         } catch (Exception e) {
-            log.error("ERROR", e);
+            log.error("결항 에러!!", e);
             resultMap.put("message", "SERVER ERROR!");
             httpStatus = HttpStatus.INTERNAL_SERVER_ERROR;
         }

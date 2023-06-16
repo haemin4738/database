@@ -27,74 +27,30 @@
         <div class="top-header">
           <div class="header">
             <div class="logo"><a href="index.html">BCAirline</a></div>
-            <div class="button-group">
-              <a href="#" class="btn btn-primary">로그인</a>
+            <div class="button-group" id="login-buttons">
+              <!-- 로그인 버튼 -->
+              <a href="login.html" class="btn btn-primary">로그인</a>
               <a href="member_form.html" class="res-button">회원가입</a>
+            </div>
+            <div class="button-group" id="account-info" style="display: none;">
+              <!-- 로그인 상태 표시 -->
+              <span id="loggedInAccount"></span>
+              <a href="logout.html" id="logoutButton" class="btn btn-secondary">로그아웃</a>
             </div>
           </div>
         </div>
-
         <nav class="navbar navbar-expand-lg bg-light">
           <div class="container-fluid">
-            <a class="navbar-brand" href="#">Navbar</a>
-            <button
-              class="navbar-toggler"
-              type="button"
-              data-bs-toggle="collapse"
-              data-bs-target="#navbarSupportedContent"
-              aria-controls="navbarSupportedContent"
-              aria-expanded="false"
-              aria-label="Toggle navigation"
-            >
-              <span class="navbar-toggler-icon"></span>
             </button>
-            <div class="collapse navbar-collapse" id="navbarSupportedContent">
-              <ul class="navbar-nav me-auto mb-2 mb-lg-0">
-                <li class="nav-item">
-                  <a class="nav-link active" aria-current="page" href="#"
-                    >Home</a
-                  >
-                </li>
-                <li class="nav-item">
-                  <a class="nav-link" href="#">Link</a>
-                </li>
-                <li class="nav-item dropdown">
-                  <a
-                    class="nav-link dropdown-toggle"
-                    href="#"
-                    role="button"
-                    data-bs-toggle="dropdown"
-                    aria-expanded="false"
-                  >
-                    Dropdown
-                  </a>
-                  <ul class="dropdown-menu">
-                    <li><a class="dropdown-item" href="#">Action</a></li>
-                    <li>
-                      <a class="dropdown-item" href="#">Another action</a>
-                    </li>
-                    <li><hr class="dropdown-divider" /></li>
-                    <li>
-                      <a class="dropdown-item" href="#">Something else here</a>
-                    </li>
-                  </ul>
-                </li>
-                <li class="nav-item">
-                  <a class="nav-link disabled">Disabled</a>
-                </li>
-              </ul>
-              <form class="d-flex" role="search">
-                <input
-                  class="form-control me-2"
-                  type="search"
-                  placeholder="Search"
-                  aria-label="Search"
-                />
-                <button class="btn btn-outline-success" type="submit">
-                  Search
-                </button>
-              </form>
-            </div>
+            <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+              <li class="nav-item"></li>
+              <li><a class="nav-link" href="customer_form.html">승객정보 입력(비회원)</a></li>
+              <li><a class="nav-link" href="customer_form.html">승객정보 입력(회원)</a></li>
+              <li><a class="nav-link" href="ticket_search.html">티켓 조회</a></li>
+            </ul>
+            </li>
+          </form>
+          </div>
           </div>
         </nav>
       </div>
@@ -330,7 +286,7 @@
 
         // 여기에 Axios POST request를 추가합니다.
         // ip 바뀌면 변경
-        const serverURL = "http://172.19.83.53:8080/signUp";
+        const serverURL = "http://172.19.84.247:8080/signUp";
 
         // Axios POST request
         axios
@@ -351,6 +307,39 @@
       // 회원가입 폼 제출 이벤트 리스너 등록
       let form = document.getElementById("signup-form");
       form.addEventListener("submit", handleSubmit);
+            // 로그인 상태 확인 함수
+    function checkLoginStatus() {
+        var loginButtons = document.getElementById("login-buttons");
+        var accountInfo = document.getElementById("account-info");
+        var loggedInAccount = document.getElementById("loggedInAccount");
+        var logoutButton = document.getElementById("logoutButton");
+        var account = sessionStorage.getItem("loggedInAccount");
+    
+        if (account) {
+          // 로그인 상태인 경우
+          loginButtons.style.display = "none";
+          accountInfo.style.display = "block";
+          loggedInAccount.textContent = "로그인된 계정: " + account;
+        } else {
+          // 로그인 상태가 아닌 경우
+          loginButtons.style.display = "block";
+          accountInfo.style.display = "none";
+          loggedInAccount.textContent = "";
+        }
+      }
+    
+      // 로그아웃 버튼 클릭 이벤트 처리
+      function logout() {
+        sessionStorage.removeItem("loggedInAccount");
+        checkLoginStatus();
+      }
+    
+      // 페이지 로드 시 로그인 상태 확인
+      checkLoginStatus();
+    
+      // 로그아웃 버튼 클릭 이벤트 연결
+      var logoutButton = document.getElementById("logoutButton");
+      logoutButton.addEventListener("click", logout);
     </script>
   </body>
 </html>

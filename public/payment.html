@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>예약 결제</title>
+    <style>
+      /* 스타일 수정 */
+      body {
+        background-color: #f2f2f2; /* 배경색을 하얀색으로 설정 */
+        font-family: Arial, sans-serif; /* 폰트 설정 */
+        margin: 0;
+        padding: 20px;
+      }
+      h1 {
+        color: #333; /* 제목 색상을 파란색으로 설정 */
+      }
+
+      h2 {
+        color: #333; /* 소제목 색상을 파란색으로 설정 */
+        margin-bottom: 10px;
+      }
+
+      #customer-info,
+      #seat-info,
+      #payment-info {
+        background-color: #fff; /* 박스 배경색을 하얀색으로 설정 */
+        border-radius: 5px;
+        padding: 20px;
+        margin-bottom: 20px;
+      }
+
+      label {
+        display: block;
+        margin-bottom: 10px;
+        font-weight: bold;
+        color: #333; /* 라벨 색상을 파란색으로 설정 */
+      }
+
+      input[type="text"] {
+        width: 100%;
+        padding: 10px;
+        border: 1px solid #ccc;
+        border-radius: 3px;
+        outline: none;
+      }
+
+      button[type="submit"] {
+        background-color: #3428d3; /* 버튼 배경색을 파란색으로 설정 */
+        color: #fff; /* 버튼 텍스트 색상을 하얀색으로 설정 */
+        border: none;
+        padding: 10px 20px;
+        border-radius: 3px;
+        cursor: pointer;
+      }
+
+      button[type="submit"]:hover {
+        background-color: #5d57b3; /* 버튼에 호버 효과 적용 */
+      }
+    </style>
+    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+  </head>
+  <body>
+    <h1>예약 결제</h1>
+    <div id="customer-info">
+      <h2>승객 정보</h2>
+    </div>
+
+    <div id="seat-info">
+      <h2>좌석 정보</h2>
+    </div>
+
+    <div id="payment-info">
+      <h2>결제 정보</h2>
+      <form id="payment-form">
+        <label for="card-number">카드 번호:</label>
+        <input type="text" id="card-number" required />
+        <br /><br />
+        <button type="submit">결제</button>
+      </form>
+    </div>
+
+    <script>
+      // sessionStorage에서 저장된 승객 및 좌석 정보 가져오기
+      const customerInfo = JSON.parse(sessionStorage.getItem("customerInfo"));
+      const seatInfo = JSON.parse(sessionStorage.getItem("seat"));
+      const seatInfo_RT = JSON.parse(sessionStorage.getItem("seat_RT"));
+      const flightData = JSON.parse(sessionStorage.getItem("flightData"));
+
+      // 승객 및 좌석 정보 출력
+      const customerInfoElement = document.getElementById("customer-info");
+      const seatInfoElement = document.getElementById("seat-info");
+
+      customerInfoElement.innerHTML = `
+      <h2>승객 정보</h2>
+      <p>이메일: ${customerInfo.email}</p>
+      <p>핸드폰 번호: ${customerInfo.phone}</p>
+      <p>생년월일: ${customerInfo.birthday}</p>
+      <p>거주국가: ${customerInfo.nation}</p>
+      <p>성별: ${customerInfo.sex}</p>
+      <p>영문 성: ${customerInfo.enLastName}</p>
+      <p>영문 이름: ${customerInfo.enFirstName}</p>
+      `;
+
+      seatInfoElement.innerHTML = `
+      <h2>좌석 정보</h2>
+      <p>좌석 번호: ${seatInfo ? seatInfo.seatNumber : ''}</p>
+      <p>좌석 등급: ${seatInfo ? seatInfo.seatClass : ''}</p>
+      <p>좌석 가격: ${seatInfo ? seatInfo.seatPrice : ''}</p>
+      ${seatInfo_RT ? `
+      <h2>좌석 정보 (Round Trip)</h2>
+      <p>좌석 번호: ${seatInfo_RT.seatNumber}</p>
+      <p>좌석 등급: ${seatInfo_RT.seatClass}</p>
+      <p>좌석 가격: ${seatInfo_RT.seatPrice}</p>
+      ` : ''}
+      `;
+
+      const paymentForm = document.getElementById("payment-form");
+      paymentForm.addEventListener("submit", (event) => {
+        event.preventDefault();
+
+        const cardNumber = document.getElementById("card-number").value;
+
+        // 경고창 표시
+        const confirmPayment = confirm("결제를 진행하시겠습니까?");
+
+        console.log(confirmPayment);
+
+        if (confirmPayment) {
+          // 예약 데이터 생성
+          const reservationData = {
+            email: customerInfo.email,
+            phone: customerInfo.phone,
+            birthday: customerInfo.birthday,
+            nation: customerInfo.nation,
+            sex: customerInfo.sex,
+            enFirstName: customerInfo.enFirstName,
+            enLastName: customerInfo.enLastName,
+            flightId: flightData.flightId,
+            payment: seatInfo ? seatInfo.seatPrice : '',
+            cardNo: cardNumber,
+            seatNo: seatInfo ? seatInfo.seatNumber : '',
+          };
+
+          // 예약 데이터를 서버로 전송하여 티켓 생성
+          axios
+            .post("http://172.19.83.23:8080/ticket/customer", reservationData)
+            .then((response) => {
+              console.log("티켓 생성 완료:", response.data);
+
+              // 티켓 생성 완료 페이지로 이동
+              window.location.href = "ticket_complete.html";
+            })
+            .catch((error) => {
+              console.log("Error:", error);
+            });
+        } else {
+          // 결제 취소
+          alert("결제가 취소되었습니다.");
+        }
+      });
+    </script>
+  </body>
+</html>

@@ -1,0 +1,267 @@
+  <!DOCTYPE html>
+  <html>
+    <head>
+      <title>항공권 조회</title>
+      <link
+        rel="stylesheet"
+        href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css"
+      />
+      <style>
+        /* CSS 스타일을 여기에 작성하세요 */
+        .container {
+          max-width: 600px;
+          margin: 0 auto;
+          padding: 20px;
+        }
+
+        .form-group {
+          margin-bottom: 20px;
+        }
+
+        .form-group label {
+          display: block;
+          font-weight: bold;
+          margin-bottom: 5px;
+        }
+
+        .form-group input[type="date"],
+        .form-group input[type="text"],
+        .form-group select {
+          width: 100%;
+          padding: 10px;
+          border: 1px solid #ccc;
+          border-radius: 3px;
+          font-size: 14px;
+        }
+
+        .form-group select {
+          height: 40px;
+        }
+
+        .form-group input[type="submit"] {
+          padding: 10px 20px;
+          background-color: #004088;
+          color: #fff;
+          border: none;
+          border-radius: 3px;
+          cursor: pointer;
+        }
+
+        .flight-item {
+          border-bottom: 1px solid #ccc;
+          padding-bottom: 10px;
+          margin-bottom: 20px;
+        }
+
+        .flight-item button {
+          padding: 5px 10px;
+          background-color: #004088;
+          color: #fff;
+          border: none;
+          border-radius: 3px;
+          cursor: pointer;
+        }
+      </style>
+    </head>
+    <body>
+      <div class="container">
+        <h2>항공권 조회</h2>
+        <ul class="nav nav-tabs">
+          <li class="nav-item">
+            <a
+              class="nav-link active"
+              id="oneWayTab"
+              data-toggle="tab"
+              href="#oneWayForm"
+              >편도</a
+            >
+          </li>
+          <li class="nav-item">
+            <a
+              class="nav-link"
+              id="roundTripTab"
+              data-toggle="tab"
+              href="#roundTripForm"
+              >왕복</a
+            >
+          </li>
+        </ul>
+        <div class="tab-content">
+          <div class="tab-pane fade show active" id="oneWayForm">
+            <form id="searchForm" onsubmit="handleSubmit(event)">
+              <div class="form-group">
+                <label for="departureDate">가는날:</label>
+                <input
+                  type="date"
+                  id="departureDate"
+                  name="oneWayDepartureDate"
+                  required
+                />
+              </div>
+              <div class="form-group">
+                <label for="departure">출발지:</label>
+                <input type="text" id="departure" name="oneWayDeparture" required />
+              </div>
+              <div class="form-group">
+                <label for="arrival">도착지:</label>
+                <input type="text" id="arrival" name="oneWayArrival" required />
+              </div>
+              <div class="form-group">
+                <label for="seatClass">좌석 등급:</label>
+                <select id="seatClass" name="oneWaySeatClass" required>
+                  <option value="">선택하세요</option>
+                  <option value="first">퍼스트</option>
+                  <option value="business">비지니스</option>
+                  <option value="economy">이코노미</option>
+                </select>
+              </div>
+              <div class="form-group">
+                <input type="submit" value="조회" />
+              </div>
+            </form>
+          </div>
+          <div class="tab-pane fade" id="roundTripForm">
+            <form id="roundTripSearchForm" onsubmit="handleSubmit_RT(event)">
+              <div class="form-group">
+                <label for="roundTripDepartureDate">가는날:</label>
+                <input
+                  type="date"
+                  id="roundTripDepartureDate"
+                  name="roundTripDepartureDate"
+                  required
+                />
+              </div>
+              <div class="form-group">
+                <label for="roundTripArrivalDate">오는날:</label>
+                <input type="date" id="roundTripArrivalDate" name="roundTripArrivalDate" required />
+              </div>
+              <div class="form-group">
+                <label for="roundTripDeparture">출발지:</label>
+                <input type="text" id="roundTripDeparture" name="roundTripDeparture" required />
+              </div>
+              <div class="form-group">
+                <label for="roundTripArrival">도착지:</label>
+                <input type="text" id="roundTripArrival" name="roundTripArrival" required />
+              </div>
+              <div class="form-group">
+                <label for="roundTripSeatClass">좌석 등급:</label>
+                <select id="roundTripSeatClass" name="roundTripSeatClass" required>
+                  <option value="">선택하세요</option>
+                  <option value="first">퍼스트</option>
+                  <option value="business">비지니스</option>
+                  <option value="economy">이코노미</option>
+                </select>
+              </div>
+              <div class="form-group">
+                <input type="submit" value="조회" />
+              </div>
+            </form>
+          </div>
+        </div>
+      </div>
+      <!---->
+      <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+      <script>
+        function handleSubmit(event) {
+          event.preventDefault();
+
+          let isRoundTrip = false;
+          let departure = document.getElementById("departure").value;
+          let arrival = document.getElementById("arrival").value;
+          let seatClass = document.getElementById("seatClass").value;
+          let departureDate = document.getElementById("departureDate").value;
+          let arrivalDate = document.getElementById("roundTripArrivalDate").value;
+
+          let requestData = {
+            isRoundTrip: isRoundTrip,
+            departure: departure,
+            arrival: arrival,
+            passengerNum: 3,
+            seatClass: seatClass,
+            departureDate: departureDate,
+            arrivalDate: arrivalDate
+          };
+          sessionStorage.setItem("requestData", JSON.stringify(requestData));
+          console.log(requestData);
+          const baseUrl = "http://172.19.83.23:8080/flight/departure";
+          const queryParams = `departure=${departure}&arrival=${arrival}&seatClass=${seatClass}&departureDate=${departureDate}&arrivalDate=${arrivalDate}`;
+
+          const url = `${baseUrl}?${queryParams}`;
+          sessionStorage.setItem("checked", "false");
+          sessionStorage.setItem("seat", JSON.stringify({
+                seatNumber: '',
+                seatClass: '',
+                seatPrice: ''
+              }));
+          sessionStorage.setItem("seat_RT", JSON.stringify({
+                seatNumber: '0',
+                seatClass: '0',
+                seatPrice: '0'
+              }));
+          axios
+            .get(url)
+            .then((response) => {
+              console.log("조회 information received successfully!");
+              console.log(response.data);
+              saveFlightData(response.data); // Save flight data to session storage
+              window.location.href = "flight.html"; // Redirect to flight.html
+            })
+            .catch((error) => {
+              console.error("Error receiving flight information:", error);
+            });
+
+          event.target.reset();
+        }
+        function handleSubmit_RT(event) {
+          event.preventDefault();
+
+          let isRoundTrip = document
+            .getElementById("roundTripTab")
+            .classList.contains("active");
+          let departure = document.getElementById("roundTripDeparture").value;
+          let arrival = document.getElementById("roundTripArrival").value;
+          let seatClass = document.getElementById("roundTripSeatClass").value;
+          let departureDate = document.getElementById("roundTripDepartureDate").value;
+          let arrivalDate = document.getElementById("roundTripArrivalDate").value;
+
+          let requestData = {
+            isRoundTrip: isRoundTrip,
+            departure: departure,
+            arrival: arrival,
+            passengerNum: 3,
+            seatClass: seatClass,
+            departureDate: departureDate,
+            arrivalDate: arrivalDate
+          };
+          sessionStorage.setItem("requestData", JSON.stringify(requestData));
+
+          console.log(requestData);
+          const baseUrl = "http://172.19.83.23:8080/flight/departure";
+          const queryParams = `departure=${departure}&arrival=${arrival}&seatClass=${seatClass}&departureDate=${departureDate}&arrivalDate=${arrivalDate}`;
+
+          const url = `${baseUrl}?${queryParams}`;
+          axios
+            .get(url)
+            .then((response) => {
+              console.log("조회 information received successfully!");
+              console.log(response.data);
+              saveFlightData(response.data);
+              window.location.href = "flight.html";
+            })
+            .catch((error) => {
+              console.error("Error receiving flight information:", error);
+            });
+
+          event.target.reset();
+        }
+
+        function saveFlightData(data) {
+          sessionStorage.setItem("flightData", JSON.stringify(data));
+        }
+      </script>
+      <!---->
+      <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+      <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.5.2/dist/js/bootstrap.bundle.min.js"></script>
+      <div id="flightData"></div>
+    </body>
+  </html>

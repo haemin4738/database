@@ -21,45 +21,8 @@
     ></script>
     <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
 
-    <!-- 상단에 로고, 회원가입, Navbar 부분-->
-    <header class="my-header">
-      <div class="container">
-        <div class="top-header">
-          <div class="header">
-            <div class="logo"><a href="index.html">BCAirline</a></div>
-            <div class="button-group" id="login-buttons">
-              <!-- 로그인 버튼 -->
-              <a href="login.html" class="btn btn-primary">로그인</a>
-              <a href="member_form.html" class="res-button">회원가입</a>
-            </div>
-            <div class="button-group" id="account-info" style="display: none;">
-              <!-- 로그인 상태 표시 -->
-              <span id="loggedInAccount"></span>
-              <a href="logout.html" id="logoutButton" class="btn btn-secondary">로그아웃</a>
-            </div>
-          </div>
-        </div>
-        <nav class="navbar navbar-expand-lg bg-light">
-          <div class="container-fluid">
-            </button>
-            <ul class="navbar-nav me-auto mb-2 mb-lg-0">
-              <li class="nav-item"></li>
-              <li><a class="nav-link" href="customer_form.html">승객정보 입력(비회원)</a></li>
-              <li><a class="nav-link" href="customer_form.html">승객정보 입력(회원)</a></li>
-              <li><a class="nav-link" href="ticket_search.html">티켓 조회</a></li>
-            </ul>
-            </li>
-          </form>
-          </div>
-          </div>
-        </nav>
-      </div>
-    </header>
-
     <!-- 정보 입력하는 부분 -->
     <div class="container">
-      <div>회원가입</div>
-
       <div class="outer">
         <div class="summit-form">
           <div class="label">회원정보 입력</div>
@@ -286,7 +249,7 @@
 
         // 여기에 Axios POST request를 추가합니다.
         // ip 바뀌면 변경
-        const serverURL = "http://172.19.84.247:8080/signUp";
+        const serverURL = "http://172.19.83.23:8080/signUp";
 
         // Axios POST request
         axios
@@ -294,6 +257,9 @@
           .then((response) => {
             console.log("Member information sent successfully!");
             console.log(response.data); // Log the response from the server
+
+            alert("회원가입이 완료되었습니다.");
+            window.location.href = "index.html";
           })
           .catch((error) => {
             console.error("Error sending member information:", error);
@@ -307,14 +273,14 @@
       // 회원가입 폼 제출 이벤트 리스너 등록
       let form = document.getElementById("signup-form");
       form.addEventListener("submit", handleSubmit);
-            // 로그인 상태 확인 함수
-    function checkLoginStatus() {
+      // 로그인 상태 확인 함수
+      function checkLoginStatus() {
         var loginButtons = document.getElementById("login-buttons");
         var accountInfo = document.getElementById("account-info");
         var loggedInAccount = document.getElementById("loggedInAccount");
         var logoutButton = document.getElementById("logoutButton");
         var account = sessionStorage.getItem("loggedInAccount");
-    
+
         if (account) {
           // 로그인 상태인 경우
           loginButtons.style.display = "none";
@@ -327,16 +293,16 @@
           loggedInAccount.textContent = "";
         }
       }
-    
+
       // 로그아웃 버튼 클릭 이벤트 처리
       function logout() {
         sessionStorage.removeItem("loggedInAccount");
         checkLoginStatus();
       }
-    
+
       // 페이지 로드 시 로그인 상태 확인
       checkLoginStatus();
-    
+
       // 로그아웃 버튼 클릭 이벤트 연결
       var logoutButton = document.getElementById("logoutButton");
       logoutButton.addEventListener("click", logout);

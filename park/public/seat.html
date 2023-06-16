@@ -1,0 +1,203 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <link rel="stylesheet" href="./css/seat.css" />
+    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+  </head>
+  <body>
+    <h1 id="title">좌석 예약</h1>
+
+    <div class="container">
+      <script>
+        // 선택한 사각형의 번호를 저장하는 변수
+        let selectedNumber = null;
+
+        // 사각형 클릭 이벤트 핸들러
+        function handleSquareClick(number) {
+          // 선택한 사각형의 번호를 업데이트
+          selectedNumber = number;
+
+          // 모든 사각형에서 선택된 스타일 제거
+          const squares = document.querySelectorAll(".container div");
+          squares.forEach((square) => square.classList.remove("selected"));
+
+          // 선택한 사각형에 선택된 스타일 추가
+          const selectedSquare = document.querySelector(
+            `.container div[data-number="${number}"]`
+          );
+          selectedSquare.classList.add("selected");
+
+          // 좌석 등급 및 가격 정보 출력
+          const seatInfoElement = document.getElementById("seat-info");
+          const seatClassElement = document.getElementById("class");
+          const seatPriceElement = document.getElementById("price");
+
+          if (number >= 1 && number <= 10) {
+            seatClassElement.textContent = "퍼스트";
+            seatPriceElement.textContent = selectedSquare.getAttribute("price");
+          } else if (number >= 11 && number <= 50) {
+            seatClassElement.textContent = "비즈니스";
+            seatPriceElement.textContent = selectedSquare.getAttribute("price");
+          } else {
+            seatClassElement.textContent = "이코노미";
+            seatPriceElement.textContent = selectedSquare.getAttribute("price");
+          }
+        }
+
+        // 예약 버튼 클릭 이벤트 핸들러
+function handleReserveButtonClick() {
+  if (selectedNumber) {
+    
+    const seatInfoElement = document.getElementById("seat-info");
+    const seatInfo = seatInfoElement.innerHTML;
+    const seatInfoElement2 = document.getElementById("class");
+    const seatClass = seatInfoElement2.innerHTML;
+    const seatInfoElement3 = document.getElementById("price");
+    const seatPrice = seatInfoElement3.innerHTML;
+
+    // 선택한 좌석 정보를 sessionStorage에 저장
+    sessionStorage.setItem("selectedSeatNumber", selectedNumber);
+    sessionStorage.setItem("selectedSeatClass", seatClass);
+    sessionStorage.setItem("selectedSeatPrice", seatPrice);
+
+    console.log("좌석 번호:", selectedNumber);
+    console.log("좌석 등급:", seatClass);
+    console.log("좌석 가격:", seatPrice);
+
+    // isRoundTrip 값이 true인 경우에만 예약 결제 페이지로 이동
+    const requestData = JSON.parse(sessionStorage.getItem("requestData"));
+    const isRoundTrip = requestData.isRoundTrip;
+    const checked = sessionStorage.getItem("checked");
+
+    if (isRoundTrip != "true" && checked == "true") {
+      sessionStorage.setItem("seat_RT", JSON.stringify({
+                seatNumber: selectedNumber,
+                seatClass: seatClass,
+                seatPrice: seatPrice
+              }));
+      window.location.href = "payment.html";
+    } else {
+      
+      // isRoundTrip 값을 true로 설정한 후 예약 정보를 sessionStorage에 저장
+      sessionStorage.setItem("checked", "true");
+      
+      // 예약 정보를 저장하고 항공편 조회 페이지로 이동
+      const departure = requestData.departure;
+      const arrival = requestData.arrival;
+      const seatClass = requestData.seatClass;
+      const departureDate = requestData.departureDate;
+      const arrivalDate = requestData.arrivalDate;
+
+      const baseUrl = "http://172.19.83.23:8080/flight/departure";
+      const queryParams = `departure=${arrival}&arrival=${departure}&seatClass=${seatClass}&departureDate=${arrivalDate}&arrivalDate=${departureDate}`;
+
+      const url = `${baseUrl}?${queryParams}`;
+      
+      sessionStorage.setItem("seat", JSON.stringify({
+                seatNumber: selectedNumber,
+                seatClass: seatClass,
+                seatPrice: seatPrice
+              }));
+      axios
+        .get(url)
+        .then((response) => {
+          console.log("조회 information received successfully!");
+          console.log(response.data);
+          saveFlightData(response.data);
+          window.location.href = "flight.html";
+        })
+        .catch((error) => {
+          console.error("Error receiving flight information:", error);
+        });
+    }
+  } else {
+    console.log("좌석을 선택해주세요.");
+  }
+}
+function saveFlightData(data) {
+          sessionStorage.setItem("flightData", JSON.stringify(data));
+        }
+
+
+
+        // JSON 데이터를 가져오는 함수
+        function fetchSeats(flightId) {
+          const url = `http://172.19.83.23:8080/seats/${flightId}`;
+          axios
+            .get(url)
+            .then((response) => {
+              // 받아온 JSON 데이터 처리
+              handleSeatData(response.data);
+            })
+            .catch((error) => {
+              console.log("Error:", error);
+            });
+        }
+
+        function handleSeatData(data) {
+          const reservedSeats = data.reservedSeats;
+          const seatPrice = data.seatPrice;
+
+          // 좌석 예약 여부 확인 및 번호 표시
+          const squares = document.querySelectorAll(".container div");
+          squares.forEach((square) => {
+            const seatNumber = parseInt(square.getAttribute("data-number"));
+            if (reservedSeats.find((seat) => seat.id === seatNumber)) {
+              square.textContent = "X";
+            }
+
+            // 좌석 등급에 따라 가격 업데이트
+            if (seatNumber >= 1 && seatNumber <= 10) {
+              square.setAttribute("price", seatPrice.first);
+              console.log(square);
+            } else if (seatNumber >= 11 && seatNumber <= 50) {
+              square.setAttribute("price", seatPrice.business);
+            } else {
+              square.setAttribute("price", seatPrice.economy);
+            }
+          });
+        }
+
+        // 페이지 로드 시 좌석 데이터 가져오기
+        window.onload = function () {
+          const queryString = window.location.search;
+          const urlParams = new URLSearchParams(queryString);
+          const flightId = urlParams.get("flightId");
+
+          if (flightId) {
+            fetchSeats(flightId);
+          } else {
+            console.log("Flight ID not found in URL parameters.");
+          }
+        };
+
+        for (let i = 1; i <= 200; i++) {
+          const div = document.createElement("div");
+          div.textContent = i;
+          div.setAttribute("data-number", i);
+          div.addEventListener("click", () => handleSquareClick(i));
+
+          if (i >= 1 && i <= 10) {
+            div.classList.add("group1");
+          } else if (i >= 11 && i <= 50) {
+            div.classList.add("group2");
+          } else {
+            div.classList.add("group3");
+          }
+
+          document.querySelector(".container").appendChild(div);
+        }
+      </script>
+    </div>
+
+    <div id="seat-info">
+      <div>좌석 등급:</div>
+      <div id="class">좌석 가격:</div>
+      <div id="price"></div>
+    </div>
+
+    <div id="reserve-button">
+      <button onclick="handleReserveButtonClick()">예약</button>
+    </div>
+  </body>
+</html>

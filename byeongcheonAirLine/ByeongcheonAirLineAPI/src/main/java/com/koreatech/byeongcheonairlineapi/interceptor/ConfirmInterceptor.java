@@ -26,13 +26,18 @@ public class ConfirmInterceptor implements HandlerInterceptor {
 
     @Override
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws IOException{
+        if (request.getMethod().equals("OPTIONS")) return true; // preflight 요청이 인터셉터에 가로채지지 않도록 설정
         String accessToken = request.getHeader("access-token");
+//        String contentType = request.getHeader("Content-Type");
 
+//        log.debug("content-type: {}", contentType);
         log.debug("token: {}", accessToken);
         log.debug("userId : {}", jwtService.getInfo("account", accessToken));
-        if (jwtService.checkToken(accessToken)) return true;
+
+        if (accessToken != null && jwtService.checkToken(accessToken)) return true;
         else {
-            throw new UnAuthorizeException();
+            response.setStatus(401);
+            return false;
         }
     }
 }

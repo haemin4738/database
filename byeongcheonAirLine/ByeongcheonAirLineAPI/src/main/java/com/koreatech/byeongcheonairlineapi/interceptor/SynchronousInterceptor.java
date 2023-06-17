@@ -24,6 +24,7 @@ public class SynchronousInterceptor implements HandlerInterceptor {
 
     @Override
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws IOException {
+        if (request.getMethod().equals("OPTIONS")) return true;
         try {
             ticketMapper.editStateReservedToUsed();
             log.debug("I USED!!!!!!!!");

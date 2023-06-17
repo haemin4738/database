@@ -58,6 +58,7 @@ public class TicketController {
      */
     @GetMapping("tickets/member")
     public ResponseEntity<Map<String, Object>> ticket(LoginDto loginDto) {
+//        log.info("token: {}", request.getHeader("access-token"));
         Map<String, Object> resultMap = new HashMap<>();
         try {
             resultMap.put("tickets", ticketService.findByMember(loginDto));

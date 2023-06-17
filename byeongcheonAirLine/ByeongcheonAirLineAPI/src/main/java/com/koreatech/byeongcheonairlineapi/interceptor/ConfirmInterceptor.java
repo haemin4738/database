@@ -36,8 +36,7 @@ public class ConfirmInterceptor implements HandlerInterceptor {
 
         if (accessToken != null && jwtService.checkToken(accessToken)) return true;
         else {
-            response.setStatus(401);
-            return false;
+            throw new UnAuthorizeException();
         }
     }
 }

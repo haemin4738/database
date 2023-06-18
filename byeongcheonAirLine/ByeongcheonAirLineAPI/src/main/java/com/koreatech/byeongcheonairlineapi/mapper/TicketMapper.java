@@ -72,7 +72,7 @@ public interface TicketMapper {
                 WHERE t.id = #{id}
                 ORDER BY field(t.state, "reserved", "canceled", "used")
             """)
-    List<ResponseTicket> findByCustomer(int id);
+    List<ResponseTicket> findById(int id);
 
     @Update("""
             UPDATE ticket

@@ -46,8 +46,8 @@ public class TicketServiceImpl implements TicketService {
 
     //비회원 id로 티켓 조회
     @Override
-    public List<ResponseTicket> findByCustomer(int id) {
-        List<ResponseTicket> tickets = ticketMapper.findByCustomer(id);
+    public List<ResponseTicket> findById(int id) {
+        List<ResponseTicket> tickets = ticketMapper.findById(id);
         for (ResponseTicket ticket : tickets) {
             ticket.setSeatId(ticket.getSeatId() % 200);
             if (ticket.getSeatId() == 0) ticket.setSeatId(200);
@@ -84,31 +84,40 @@ public class TicketServiceImpl implements TicketService {
 
     @Transactional
     @Override
-    public int createCustomerTicket(RequestCreateTicket requestCreateTicket) {
-        Customer customer = new Customer();
+    public void createCustomerTicket(RequestCreateTicket requestCreateTicket) {
         Ticket ticket = new Ticket();
-        //System.out.println(requestCustomerTicket);
+        // 먼저 해당 비회원이 DB에 있는지 확인
+        Customer customer = customerMapper.findByEmail(requestCreateTicket.getEmail());
+        // 해당 비회원이 DB에 있다면
+        if (customer != null) {
+            // 해당 ID 바로 지정.
+            ticket.setCustomerId(customer.getId());
+        }
+        // 해당 비회원이 DB에 없다면 새로 DB에 삽입
+        else {
+            customer = new Customer();
+            customer.setBirthday(requestCreateTicket.getBirthday());
+            customer.setNation(requestCreateTicket.getNation());
+            customer.setEmail(requestCreateTicket.getEmail());
+            customer.setSex(requestCreateTicket.getSex());
+            customer.setPhone(requestCreateTicket.getPhone());
+            customer.setEnFirstName(requestCreateTicket.getEnFirstName());
+            customer.setEnLastName(requestCreateTicket.getEnLastName());
 
-        customer.setBirthday(requestCreateTicket.getBirthday());
-        customer.setNation(requestCreateTicket.getNation());
-        customer.setEmail(requestCreateTicket.getEmail());
-        customer.setSex(requestCreateTicket.getSex());
-        customer.setPhone(requestCreateTicket.getPhone());
-        customer.setEnFirstName(requestCreateTicket.getEnFirstName());
-        customer.setEnLastName(requestCreateTicket.getEnLastName());
-        customerMapper.create(customer);
-        //id넣어서 새로 customer 갱신
-        customer = customerMapper.findByEmail(customer.getEmail());
+            customerMapper.create(customer);
+            // 새로 DB에 삽입된 비회원의 ID 로 ticket 객체의 customerId 지정
+            customer = customerMapper.findByEmail(customer.getEmail());
+            ticket.setCustomerId(customer.getId());
+        }
+        // 나머지 티켓 객체 속성 채우기
         ticket.setPayment(requestCreateTicket.getPayment());
         ticket.setCardNo(requestCreateTicket.getCardNo());
         ticket.setFlightId(requestCreateTicket.getFlightId());
-        ticket.setCustomerId(customer.getId());
-
+        // 좌석 번호 채우기
         Plane plane = planeMapper.findByFlightId(requestCreateTicket.getFlightId());
         ticket.setSeatId((plane.getId() - 1) * 200 + requestCreateTicket.getSeatNo());
         //티켓 생성
         ticketMapper.createByCustomer(ticket);
-        return ticket.getId();
     }
 
     @Transactional

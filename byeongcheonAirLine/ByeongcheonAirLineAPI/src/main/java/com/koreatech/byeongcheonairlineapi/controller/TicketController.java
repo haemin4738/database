@@ -23,14 +23,11 @@ import java.util.Map;
 @RestController
 public class TicketController {
     private final TicketService ticketService;
-    private final MemberService memberService;
-
     private final CancelService cancelService;
 
     @Autowired
-    public TicketController(TicketService ticketService, MemberService memberService, CancelService cancelService) {
+    public TicketController(TicketService ticketService, CancelService cancelService) {
         this.ticketService = ticketService;
-        this.memberService = memberService;
         this.cancelService = cancelService;
     }
 
@@ -81,7 +78,7 @@ public class TicketController {
     public ResponseEntity<Map<String, Object>> ticket(@PathVariable int id) {
         Map<String, Object> resultMap = new HashMap<>();
         try {
-            resultMap.put("tickets", ticketService.findByCustomer(id));
+            resultMap.put("tickets", ticketService.findById(id));
             resultMap.put("message", "SUCCESS!");
             return new ResponseEntity<>(resultMap, HttpStatus.OK);
         } catch (Exception e) {

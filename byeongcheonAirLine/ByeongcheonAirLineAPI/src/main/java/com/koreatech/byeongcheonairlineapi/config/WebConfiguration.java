@@ -20,7 +20,7 @@ public class WebConfiguration implements WebMvcConfigurer {
 //		Allow "simple" methods GET, HEAD and POST.
 //		Allow all headers.
 //		Set max age to 1800 seconds (30 minutes).
-        registry.addMapping("/**").allowedOrigins("http://172.20.10.4:3000") // 요청할 클라이언트들의 Origin들 기입.
+        registry.addMapping("/**").allowedOrigins("http://localhost:3000") // 요청할 클라이언트들의 Origin들 기입.
                 .allowedMethods(HttpMethod.GET.name(), HttpMethod.POST.name(), HttpMethod.PUT.name(),
                         HttpMethod.DELETE.name(), HttpMethod.HEAD.name(), HttpMethod.OPTIONS.name(),
                         HttpMethod.PATCH.name())

@@ -2,10 +2,8 @@
 <html>
   <head>
     <title>티켓 조회(비회원)</title>
-    <link
-      rel="stylesheet"
-      href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css"
-    />
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" />
+
     <link rel="stylesheet" href="./css/ticket.css" />
     <link rel="stylesheet" href="./css/header.css" />
   </head>
@@ -55,7 +53,7 @@
     <script>
       // 티켓 데이터를 동적으로 불러오는 함수
       function fetchTicketsFromDB(id) {
-        return fetch(`http://172.19.83.23:8080/tickets/${id}`)
+        return fetch(`http://172.19.85.45:8080/tickets/${id}`)
           .then((response) => response.json())
           .then((data) => data.tickets)
           .catch((error) => {

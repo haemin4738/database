@@ -29,6 +29,8 @@
       </form>
     </div>
     <script>
+      axios.defaults.withCredentials = true;
+
       function handleSubmit(event) {
         event.preventDefault();
         let account = document.getElementById("account").value;
@@ -38,7 +40,7 @@
           password: password,
         };
 
-        const serverURL = "http://172.19.84.247:8080/member/login";
+        const serverURL = "http://192.168.137.1:8080/member/login";
         axios
           .post(serverURL, member)
           .then((response) => {

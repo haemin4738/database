@@ -60,6 +60,7 @@
   </head>
   <body>
     <h1>예약 결제</h1>
+
     <div id="customer-info">
       <h2>승객 정보</h2>
     </div>
@@ -79,38 +80,51 @@
     </div>
 
     <script>
+      axios.defaults.withCredentials = true;
+      const accessToken = sessionStorage.getItem("accessToken");
+      const config = {
+        headers: {
+          "access-token": accessToken,
+        },
+      };
+
       // sessionStorage에서 저장된 승객 및 좌석 정보 가져오기
       const customerInfo = JSON.parse(sessionStorage.getItem("customerInfo"));
       const seatInfo = JSON.parse(sessionStorage.getItem("seat"));
       const seatInfo_RT = JSON.parse(sessionStorage.getItem("seat_RT"));
       const flightData = JSON.parse(sessionStorage.getItem("flightData"));
+      const flightData_RT = JSON.parse(sessionStorage.getItem("flightData_RT"));
 
       // 승객 및 좌석 정보 출력
       const customerInfoElement = document.getElementById("customer-info");
       const seatInfoElement = document.getElementById("seat-info");
 
       customerInfoElement.innerHTML = `
-      <h2>승객 정보</h2>
-      <p>이메일: ${customerInfo.email}</p>
-      <p>핸드폰 번호: ${customerInfo.phone}</p>
-      <p>생년월일: ${customerInfo.birthday}</p>
-      <p>거주국가: ${customerInfo.nation}</p>
-      <p>성별: ${customerInfo.sex}</p>
-      <p>영문 성: ${customerInfo.enLastName}</p>
-      <p>영문 이름: ${customerInfo.enFirstName}</p>
+        <h2>승객 정보</h2>
+        <p>이메일: ${customerInfo.email}</p>
+        <p>핸드폰 번호: ${customerInfo.phone}</p>
+        <p>생년월일: ${customerInfo.birthday}</p>
+        <p>거주국가: ${customerInfo.nation}</p>
+        <p>성별: ${customerInfo.sex}</p>
+        <p>영문 성: ${customerInfo.enLastName}</p>
+        <p>영문 이름: ${customerInfo.enFirstName}</p>
       `;
 
       seatInfoElement.innerHTML = `
-      <h2>좌석 정보</h2>
-      <p>좌석 번호: ${seatInfo ? seatInfo.seatNumber : ''}</p>
-      <p>좌석 등급: ${seatInfo ? seatInfo.seatClass : ''}</p>
-      <p>좌석 가격: ${seatInfo ? seatInfo.seatPrice : ''}</p>
-      ${seatInfo_RT ? `
-      <h2>좌석 정보 (Round Trip)</h2>
-      <p>좌석 번호: ${seatInfo_RT.seatNumber}</p>
-      <p>좌석 등급: ${seatInfo_RT.seatClass}</p>
-      <p>좌석 가격: ${seatInfo_RT.seatPrice}</p>
-      ` : ''}
+        <h2>좌석 정보</h2>
+        <p>좌석 번호: ${seatInfo ? seatInfo.seatNumber : ""}</p>
+        <p>좌석 등급: ${seatInfo ? seatInfo.seatClass : ""}</p>
+        <p>좌석 가격: ${seatInfo ? seatInfo.seatPrice : ""}</p>
+        ${
+          seatInfo_RT
+            ? `
+        <h2>좌석 정보 (Round Trip)</h2>
+        <p>좌석 번호: ${seatInfo_RT.seatNumber}</p>
+        <p>좌석 등급: ${seatInfo_RT.seatClass}</p>
+        <p>좌석 가격: ${seatInfo_RT.seatPrice}</p>
+        `
+            : ""
+        }
       `;
 
       const paymentForm = document.getElementById("payment-form");
@@ -134,28 +148,99 @@
             sex: customerInfo.sex,
             enFirstName: customerInfo.enFirstName,
             enLastName: customerInfo.enLastName,
-            flightId: flightData.flightId,
-            payment: seatInfo ? seatInfo.seatPrice : '',
+            flightId: flightData.flights[0].flightId,
+            payment: seatInfo ? seatInfo.seatPrice : "",
             cardNo: cardNumber,
-            seatNo: seatInfo ? seatInfo.seatNumber : '',
+            seatNo: seatInfo ? seatInfo.seatNumber : "",
           };
-
+          console.log("예약 데이터:", reservationData);
           // 예약 데이터를 서버로 전송하여 티켓 생성
-          axios
-            .post("http://172.19.83.23:8080/ticket/customer", reservationData)
-            .then((response) => {
-              console.log("티켓 생성 완료:", response.data);
 
-              // 티켓 생성 완료 페이지로 이동
-              window.location.href = "ticket_complete.html";
-            })
-            .catch((error) => {
-              console.log("Error:", error);
-            });
-        } else {
-          // 결제 취소
-          alert("결제가 취소되었습니다.");
+          if (accessToken) {
+            axios
+              .post(
+                "http://172.19.85.45:8080/ticket/member",
+                reservationData,
+                config
+              )
+              .then((response) => {
+                console.log("티켓 생성 완료:", response.data);
+              })
+              .catch((error) => {
+                console.log("Error:", error);
+              });
+
+            if (seatInfo_RT && flightData_RT) {
+              const reservationData_RT = {
+                email: customerInfo.email,
+                phone: customerInfo.phone,
+                birthday: customerInfo.birthday,
+                nation: customerInfo.nation,
+                sex: customerInfo.sex,
+                enFirstName: customerInfo.enFirstName,
+                enLastName: customerInfo.enLastName,
+                flightId: flightData_RT.flights[0].flightId,
+                payment: seatInfo_RT.seatPrice,
+                cardNo: cardNumber,
+                seatNo: seatInfo_RT.seatNumber,
+              };
+
+              axios
+                .post(
+                  "http://172.19.85.45:8080/ticket/member",
+                  reservationData_RT,
+                  config
+                )
+                .then((response) => {
+                  console.log("티켓 생성 완료 (Round Trip):", response.data);
+                })
+                .catch((error) => {
+                  console.log("Error (Round Trip):", error);
+                });
+            }
+          }
+
+          if (!accessToken) {
+            axios
+              .post("http://172.19.85.45:8080/ticket/customer", reservationData)
+              .then((response) => {
+                console.log("티켓 생성 완료:", response.data);
+              })
+              .catch((error) => {
+                console.log("Error:", error);
+              });
+
+            if (seatInfo_RT && flightData_RT) {
+              const reservationData_RT = {
+                email: customerInfo.email,
+                phone: customerInfo.phone,
+                birthday: customerInfo.birthday,
+                nation: customerInfo.nation,
+                sex: customerInfo.sex,
+                enFirstName: customerInfo.enFirstName,
+                enLastName: customerInfo.enLastName,
+                flightId: flightData_RT.flights[0].flightId,
+                payment: seatInfo_RT.seatPrice,
+                cardNo: cardNumber,
+                seatNo: seatInfo_RT.seatNumber,
+              };
+
+              axios
+                .post(
+                  "http://172.19.85.45:8080/ticket/customer",
+                  reservationData_RT
+                )
+                .then((response) => {
+                  console.log("티켓 생성 완료 (Round Trip):", response.data);
+                })
+                .catch((error) => {
+                  console.log("Error (Round Trip):", error);
+                });
+            }
+          }
         }
+
+        window.location.href = "ticket_complete.html";
       });
     </script>
   </body>

@@ -45,84 +45,92 @@
         }
 
         // 예약 버튼 클릭 이벤트 핸들러
-function handleReserveButtonClick() {
-  if (selectedNumber) {
-    
-    const seatInfoElement = document.getElementById("seat-info");
-    const seatInfo = seatInfoElement.innerHTML;
-    const seatInfoElement2 = document.getElementById("class");
-    const seatClass = seatInfoElement2.innerHTML;
-    const seatInfoElement3 = document.getElementById("price");
-    const seatPrice = seatInfoElement3.innerHTML;
+        function handleReserveButtonClick() {
+          if (selectedNumber) {
+            const seatInfoElement = document.getElementById("seat-info");
+            const seatInfo = seatInfoElement.innerHTML;
+            const seatInfoElement2 = document.getElementById("class");
+            const seatClass = seatInfoElement2.innerHTML;
+            const seatInfoElement3 = document.getElementById("price");
+            const seatPrice = seatInfoElement3.innerHTML;
 
-    // 선택한 좌석 정보를 sessionStorage에 저장
-    sessionStorage.setItem("selectedSeatNumber", selectedNumber);
-    sessionStorage.setItem("selectedSeatClass", seatClass);
-    sessionStorage.setItem("selectedSeatPrice", seatPrice);
+            // 선택한 좌석 정보를 sessionStorage에 저장
+            sessionStorage.setItem("selectedSeatNumber", selectedNumber);
+            sessionStorage.setItem("selectedSeatClass", seatClass);
+            sessionStorage.setItem("selectedSeatPrice", seatPrice);
 
-    console.log("좌석 번호:", selectedNumber);
-    console.log("좌석 등급:", seatClass);
-    console.log("좌석 가격:", seatPrice);
+            console.log("좌석 번호:", selectedNumber);
+            console.log("좌석 등급:", seatClass);
+            console.log("좌석 가격:", seatPrice);
 
-    // isRoundTrip 값이 true인 경우에만 예약 결제 페이지로 이동
-    const requestData = JSON.parse(sessionStorage.getItem("requestData"));
-    const isRoundTrip = requestData.isRoundTrip;
-    const checked = sessionStorage.getItem("checked");
+            // isRoundTrip 값이 true인 경우에만 예약 결제 페이지로 이동
+            const requestData = JSON.parse(
+              sessionStorage.getItem("requestData")
+            );
+            const isRoundTrip = requestData.isRoundTrip;
+            const checked = sessionStorage.getItem("checked");
 
-    if (isRoundTrip != "true" && checked == "true") {
-      sessionStorage.setItem("seat_RT", JSON.stringify({
-                seatNumber: selectedNumber,
-                seatClass: seatClass,
-                seatPrice: seatPrice
-              }));
-      window.location.href = "payment.html";
-    } else {
-      
-      // isRoundTrip 값을 true로 설정한 후 예약 정보를 sessionStorage에 저장
-      sessionStorage.setItem("checked", "true");
-      
-      // 예약 정보를 저장하고 항공편 조회 페이지로 이동
-      const departure = requestData.departure;
-      const arrival = requestData.arrival;
-      const seatClass = requestData.seatClass;
-      const departureDate = requestData.departureDate;
-      const arrivalDate = requestData.arrivalDate;
+            console.log(isRoundTrip);
+            if (isRoundTrip == null || checked === "true") {
+              sessionStorage.setItem(
+                "seat",
+                JSON.stringify({
+                  seatNumber: selectedNumber,
+                  seatClass: seatClass,
+                  seatPrice: seatPrice,
+                })
+              );
+              window.location.href = "payment.html";
+            } else {
+              // isRoundTrip 값을 true로 설정한 후 예약 정보를 sessionStorage에 저장
+              sessionStorage.setItem("checked", "true");
 
-      const baseUrl = "http://172.19.83.23:8080/flight/departure";
-      const queryParams = `departure=${arrival}&arrival=${departure}&seatClass=${seatClass}&departureDate=${arrivalDate}&arrivalDate=${departureDate}`;
+              // 예약 정보를 저장하고 항공편 조회 페이지로 이동
+              const departure = requestData.departure;
+              const arrival = requestData.arrival;
+              const seatClass = requestData.seatClass;
+              const departureDate = requestData.departureDate;
+              const arrivalDate = requestData.arrivalDate;
 
-      const url = `${baseUrl}?${queryParams}`;
-      
-      sessionStorage.setItem("seat", JSON.stringify({
-                seatNumber: selectedNumber,
-                seatClass: seatClass,
-                seatPrice: seatPrice
-              }));
-      axios
-        .get(url)
-        .then((response) => {
-          console.log("조회 information received successfully!");
-          console.log(response.data);
-          saveFlightData(response.data);
-          window.location.href = "flight.html";
-        })
-        .catch((error) => {
-          console.error("Error receiving flight information:", error);
-        });
-    }
-  } else {
-    console.log("좌석을 선택해주세요.");
-  }
-}
-function saveFlightData(data) {
+              const baseUrl = "http://172.19.85.45:8080/flight/departure";
+              const queryParams = `departure=${arrival}&arrival=${departure}&seatClass=${seatClass}&departureDate=${arrivalDate}&arrivalDate=${departureDate}`;
+
+              const url = `${baseUrl}?${queryParams}`;
+
+              sessionStorage.setItem(
+                "seat_RT",
+                JSON.stringify({
+                  seatNumber: selectedNumber,
+                  seatClass: seatClass,
+                  seatPrice: seatPrice,
+                })
+              );
+              axios
+                .get(url)
+                .then((response) => {
+                  console.log("조회 information received successfully!");
+                  console.log(response.data);
+                  saveFlightData_RT(response.data);
+                  window.location.href = "flight.html";
+                })
+                .catch((error) => {
+                  console.error("Error receiving flight information:", error);
+                });
+            }
+          } else {
+            console.log("좌석을 선택해주세요.");
+          }
+        }
+        function saveFlightData(data) {
           sessionStorage.setItem("flightData", JSON.stringify(data));
         }
-
-
+        function saveFlightData_RT(data) {
+          sessionStorage.setItem("flightData_RT", JSON.stringify(data));
+        }
 
         // JSON 데이터를 가져오는 함수
         function fetchSeats(flightId) {
-          const url = `http://172.19.83.23:8080/seats/${flightId}`;
+          const url = `http://172.19.85.45:8080/seats/${flightId}`;
           axios
             .get(url)
             .then((response) => {

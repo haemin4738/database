@@ -9,6 +9,13 @@
     <link rel="stylesheet" href="./css/ticket.css" />
     <link rel="stylesheet" href="./css/header.css" />
   </head>
+  <style>
+    .ticket {
+      border: 1px solid #ccc;
+      padding: 10px;
+      margin-bottom: 10px;
+    }
+  </style>
   <header class="my-header">
     <div class="container">
       <div class="top-header">
@@ -48,7 +55,7 @@
       <h2>티켓 조회(회원)</h2>
       <div>
         <input type="text" id="accountInput" placeholder="아이디" />
-        <input type="text" id="passwordInput" placeholder="패스워드" />
+        <input type="password" id="passwordInput" placeholder="패스워드" />
         <button onclick="searchTicket()">검색</button>
       </div>
       <div id="ticketList"></div>
@@ -57,24 +64,88 @@
     <script>
     // 티켓 조회 함수
     function searchTicket() {
-        const accountInput = document.getElementById("accountInput").value;
-        const passwordInput = document.getElementById("passwordInput").value;
-        const accessToken = sessionStorage.getItem("accessToken");
-        
-        const config = {
-          headers:{
-            "aceess-token" : accessToken
-          }
-        }
+  const accountInput = document.getElementById("accountInput").value;
+  const passwordInput = document.getElementById("passwordInput").value;
+  const accessToken = sessionStorage.getItem("accessToken");
+  const config = {
+    headers: {
+      "access-token": accessToken
+    }
+  };
 
-        axios
-        .get(`http://172.19.83.23:8080/tickets/member?account=${accountInput}&password=${passwordInput}`, config)
+  axios
+          .get(`http://192.168.137.1:8080/tickets/member?account=${accountInput}&password=${passwordInput}`, config)
           .then(function (response) {
-            // 티켓 조회 성공 시 처리하는 로직
-            console.log(response.data);
+            const tickets = response.data.tickets;
+            console.log(tickets);
+            console.log(tickets.length);
+            const ticketList = document.getElementById("ticketList");
+            ticketList.innerHTML = ""; // 기존 내용 지우기
+
+            if (tickets.length > 0) {
+              tickets.forEach(function (ticket) {
+                const ticketDiv = document.createElement("div");
+                ticketDiv.classList.add("ticket");
+                ticketDiv.id = `ticket-${ticket.id}`; // 고유한 ID 부여
+
+                // 티켓 번호
+                const ticketNumber = document.createElement("p");
+                ticketNumber.textContent = `티켓 번호: ${ticket.id}`;
+                ticketDiv.appendChild(ticketNumber);
+
+                // 출발지
+                const departure = document.createElement("p");
+                departure.textContent = `출발지: ${ticket.departure}`;
+                ticketDiv.appendChild(departure);
+
+                // 도착지
+                const arrival = document.createElement("p");
+                arrival.textContent = `도착지: ${ticket.arrival}`;
+                ticketDiv.appendChild(arrival);
+
+                // 출발 시간
+                const departureTime = document.createElement("p");
+                departureTime.textContent = `출발 시간: ${ticket.departureTime}`;
+                ticketDiv.appendChild(departureTime);
+
+                // 도착 시간
+                const arrivalTime = document.createElement("p");
+                arrivalTime.textContent = `도착 시간: ${ticket.arrivalTime}`;
+                ticketDiv.appendChild(arrivalTime);
+
+                // 좌석 등급
+                const seatClass = document.createElement("p");
+                seatClass.textContent = `좌석 등급: ${ticket.seatClass}`;
+                ticketDiv.appendChild(seatClass);
+
+                // 항공기
+                const planeName = document.createElement("p");
+                planeName.textContent = `항공기: ${ticket.planeName}`;
+                ticketDiv.appendChild(planeName);
+
+                // 좌석 번호
+                const seatId = document.createElement("p");
+                seatId.textContent = `좌석 번호: ${ticket.seatId}`;
+                ticketDiv.appendChild(seatId);
+
+                // 티켓 상태
+                const state = document.createElement("p");
+        state.className = `state ${ticket.state}`;
+        state.textContent =
+          ticket.state === "reserved"
+            ? "예약됨"
+            : ticket.state === "canceled"
+            ? "취소됨"
+            : "사용됨";
+                ticketDiv.appendChild(state);
+
+                ticketList.appendChild(ticketDiv);
+              });
+            } else {
+              ticketList.textContent = "티켓이 없습니다.";
+            }
           })
           .catch(function (error) {
-            // 티켓 조회 실패 시 처리하는 로직
             console.log(error);
           });
       }

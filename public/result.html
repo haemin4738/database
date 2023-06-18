@@ -19,59 +19,62 @@
 
     <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
     <script>
-      document.getElementById("flightSearchForm").addEventListener("submit", function(event) {
-        event.preventDefault();
+      document
+        .getElementById("flightSearchForm")
+        .addEventListener("submit", function (event) {
+          event.preventDefault();
 
-        // 입력 데이터 가져오기
-        const departure = document.getElementById("departure").value;
-        const arrival = document.getElementById("arrival").value;
-        const passengerNum = document.getElementById("passengerNum").value;
-        const seatClass = document.getElementById("seatClass").value;
-        const departureDate = document.getElementById("departureDate").value;
-        const arrivalDate = document.getElementById("arrivalDate").value;
+          // 입력 데이터 가져오기
+          const departure = document.getElementById("departure").value;
+          const arrival = document.getElementById("arrival").value;
+          const passengerNum = document.getElementById("passengerNum").value;
+          const seatClass = document.getElementById("seatClass").value;
+          const departureDate = document.getElementById("departureDate").value;
+          const arrivalDate = document.getElementById("arrivalDate").value;
 
-        // 서버 URL
-        const serverURL = "http://172.19.83.53:8080/flight/departure";
+          // 서버 URL
+          const serverURL = "http://172.19.85.45:8080/flight/departure";
 
-        // 요청 데이터 생성
-        const requestData = {
-          isRoundTrip: true,
-          departure: departure,
-          arrival: arrival,
-          passengerNum: passengerNum,
-          seatClass: seatClass,
-          departureDate: departureDate,
-          arrivalDate: arrivalDate
-        };
+          // 요청 데이터 생성
+          const requestData = {
+            isRoundTrip: true,
+            departure: departure,
+            arrival: arrival,
+            passengerNum: passengerNum,
+            seatClass: seatClass,
+            departureDate: departureDate,
+            arrivalDate: arrivalDate,
+          };
 
-        // GET 요청 보내기
-        axios
-          .get(serverURL, {
-            params: requestData,
-            headers: {
-              "Content-Type": "application/json"
-            }
-          })
-          .then(function(response) {
-            console.log("조회 information sent successfully!");
-            console.log(response.data);
+          // GET 요청 보내기
+          axios
+            .get(serverURL, {
+              params: requestData,
+              headers: {
+                "Content-Type": "application/json",
+              },
+            })
+            .then(function (response) {
+              console.log("조회 information sent successfully!");
+              console.log(response.data);
 
-            // 조회 결과를 HTML로 표시
-            const flightData = response.data.flights;
-            let html = "<h3>항공권 목록</h3><table class='table'><thead><tr><th>가격</th><th>출발시간</th><th>도착시간</th><th>비행기</th><th>출발지</th><th>도착지</th></tr></thead><tbody>";
+              // 조회 결과를 HTML로 표시
+              const flightData = response.data.flights;
+              let html =
+                "<h3>항공권 목록</h3><table class='table'><thead><tr><th>가격</th><th>출발시간</th><th>도착시간</th><th>비행기</th><th>출발지</th><th>도착지</th></tr></thead><tbody>";
 
-            flightData.forEach(function(flight) {
-              html += `<tr><td>${flight.price}</td><td>${flight.departureTime}</td><td>${flight.arrivalTime}</td><td>${flight.planeName}</td><td>${flight.departure}</td><td>${flight.arrival}</td></tr>`;
+              flightData.forEach(function (flight) {
+                html += `<tr><td>${flight.price}</td><td>${flight.departureTime}</td><td>${flight.arrivalTime}</td><td>${flight.planeName}</td><td>${flight.departure}</td><td>${flight.arrival}</td></tr>`;
+              });
+
+              html += "</tbody></table>";
+
+              document.getElementById("flightData").innerHTML = html;
+            })
+            .catch(function (error) {
+              console.error("Error fetching flight data:", error);
             });
-
-            html += "</tbody></table>";
-
-            document.getElementById("flightData").innerHTML = html;
-          })
-          .catch(function(error) {
-            console.error("Error fetching flight data:", error);
-          });
-      });
+        });
     </script>
   </body>
 </html>

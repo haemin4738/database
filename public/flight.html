@@ -42,13 +42,22 @@
     </div>
 
     <script>
+      let checked = sessionStorage.getItem("checked");
+      let flightData, flightData_RT;
+
+      if (checked === "false") {
+        flightData = sessionStorage.getItem("flightData");
+      } else {
+        flightData_RT = sessionStorage.getItem("flightData_RT");
+      }
+
       function displayFlightData(data) {
         let flightDataDiv = document.getElementById("flightData");
 
         // Clear previous data
         flightDataDiv.innerHTML = "";
 
-        if (data.flights.length === 0) {
+        if (!data || data.flights.length === 0) {
           flightDataDiv.innerText = "검색 결과가 없습니다.";
           return;
         }
@@ -80,8 +89,8 @@
 
       function selectSeat(flightId) {
         // Check if sessionStorage has 'checked' set to true
-        let checked = sessionStorage.getItem('checked');
-        if (checked === 'true') {
+
+        if (checked === "true") {
           // Redirect to seat.html with the selected flightId
           window.location.href = `seat.html?flightId=${flightId}`;
         } else {
@@ -90,11 +99,12 @@
         }
       }
 
-      // Retrieve flight data from session storage
-      let flightData = sessionStorage.getItem("flightData");
       if (flightData) {
         flightData = JSON.parse(flightData);
         displayFlightData(flightData);
+      } else if (flightData_RT) {
+        flightData_RT = JSON.parse(flightData_RT);
+        displayFlightData(flightData_RT);
       }
     </script>
   </body>

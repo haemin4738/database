@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>항공편 목록</title>
+    <link
+      rel="stylesheet"
+      href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css"
+    />
+    <style>
+      /* CSS 스타일을 여기에 작성하세요 */
+      .container {
+        max-width: 600px;
+        margin: 0 auto;
+        padding: 20px;
+      }
+
+      .flight-list {
+        list-style: none;
+        padding: 0;
+      }
+
+      .flight-item {
+        border-bottom: 1px solid #ccc;
+        padding-bottom: 10px;
+        margin-bottom: 20px;
+      }
+
+      .flight-item button {
+        padding: 5px 10px;
+        background-color: #004088;
+        color: #fff;
+        border: none;
+        border-radius: 3px;
+        cursor: pointer;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="container">
+      <h2>항공편 목록</h2>
+      <div id="flightData"></div>
+    </div>
+
+    <script>
+      function displayFlightData(data) {
+        let flightDataDiv = document.getElementById("flightData");
+
+        // Clear previous data
+        flightDataDiv.innerHTML = "";
+
+        if (data.flights.length === 0) {
+          flightDataDiv.innerText = "검색 결과가 없습니다.";
+          return;
+        }
+
+        let ul = document.createElement("ul");
+        ul.className = "flight-list";
+
+        for (let i = 0; i < data.flights.length; i++) {
+          let flight = data.flights[i];
+
+          let li = document.createElement("li");
+          li.className = "flight-item";
+          li.innerHTML = `
+            <strong>항공편 번호:</strong> ${flight.flightId}<br>
+            <strong>출발 시간:</strong> ${flight.departureTime}<br>
+            <strong>도착 시간:</strong> ${flight.arrivalTime}<br>
+            <strong>출발지:</strong> ${flight.departure}<br>
+            <strong>도착지:</strong> ${flight.arrival}<br>
+            <strong>가격:</strong> ${flight.price} 원<br>
+            <strong>남은 좌석 수:</strong> ${flight.availableSeats}<br>
+            <button class="select-seat-btn" onclick="selectSeat('${flight.flightId}')">좌석 선택</button> 
+          `;
+
+          ul.appendChild(li);
+        }
+
+        flightDataDiv.appendChild(ul);
+      }
+
+      function selectSeat(flightId) {
+        // Check if sessionStorage has 'checked' set to true
+        let checked = sessionStorage.getItem('checked');
+        if (checked === 'true') {
+          // Redirect to seat.html with the selected flightId
+          window.location.href = `seat.html?flightId=${flightId}`;
+        } else {
+          // Redirect to customer_form.html with the selected flightId
+          window.location.href = `customer_form.html?flightId=${flightId}`;
+        }
+      }
+
+      // Retrieve flight data from session storage
+      let flightData = sessionStorage.getItem("flightData");
+      if (flightData) {
+        flightData = JSON.parse(flightData);
+        displayFlightData(flightData);
+      }
+    </script>
+  </body>
+</html>
